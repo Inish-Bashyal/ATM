@@ -46,7 +46,7 @@ public class Facultycontroller {
         try {
             while (rs.next()) {
                 faculty = new Faculty();
-                faculty.setLoginId(rs.getInt("FactID"));
+                faculty.setLoginId(rs.getInt("LoginId"));
                 faculty.setfacFname(rs.getString("factFname"));
                 faculty.setfacLname(rs.getString("factLname"));
                 faculty.setGender(rs.getString("gender"));
@@ -72,9 +72,9 @@ public class Facultycontroller {
             while (rs.next()) {
                 Faculty faculty = new Faculty();
 
-                faculty.setLoginId(rs.getInt("factID"));
+                faculty.setLoginId(rs.getInt("LoginId"));
                 faculty.setfacFname(rs.getString("factFname"));
-                faculty.setfacLname(rs.getString("facttLname"));
+                faculty.setfacLname(rs.getString("factLname"));
                 faculty.setGender(rs.getString("gender"));
                 faculty.setPhoneNo(rs.getString("phoneNo"));
                 faculty.setDateOfBirth(rs.getString("dateOfBirth"));

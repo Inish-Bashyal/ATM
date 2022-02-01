@@ -200,6 +200,8 @@ public class Login_Page extends javax.swing.JFrame {
         login_btn.setBackground(new java.awt.Color(186, 79, 84));
         login_btn.setForeground(new java.awt.Color(123, 0, 0));
         login_btn.setText("Log In");
+
+        //login connection
         login_btn.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {

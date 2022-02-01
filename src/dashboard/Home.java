@@ -5,7 +5,9 @@
 package dashboard;
 
 import controller.Facultycontroller;
+import controller.StudentController;
 import model.Faculty;
+import model.Student;
 
 /**
  *
@@ -298,7 +300,7 @@ public class Home extends javax.swing.JFrame {
 
         gender_Label.setText("Gender");
 
-        gender_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        gender_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female", "Others"}));
         gender_ComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gender_ComboBoxActionPerformed(evt);
@@ -563,7 +565,7 @@ public class Home extends javax.swing.JFrame {
 
         courseName_Label.setText("Course Name");
 
-        semester_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        semester_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Semester 1", "Semester 2", "Semester 3", "Semester 4","Semester 5","Semester 6" }));
 
         semester_Label.setText("Semester");
 
@@ -583,7 +585,7 @@ public class Home extends javax.swing.JFrame {
 
         jLabel15.setText("Gender :");
 
-        student_Gender_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        student_Gender_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female", "Others" }));
 
         student_Password_Label.setText("Password");
 
@@ -602,6 +604,11 @@ public class Home extends javax.swing.JFrame {
         save_AddStudent_Button.setBackground(new java.awt.Color(0, 0, 255));
         save_AddStudent_Button.setForeground(new java.awt.Color(255, 255, 255));
         save_AddStudent_Button.setText("SAVE");
+        save_AddStudent_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                save_AddStudent_ButtonActionPerformed(evt);
+            }
+        });
 
         reset_AddStudent_Button.setBackground(new java.awt.Color(0, 0, 255));
         reset_AddStudent_Button.setForeground(new java.awt.Color(255, 255, 255));
@@ -1820,6 +1827,39 @@ public class Home extends javax.swing.JFrame {
             password_PasswordField.requestFocus();
         }
     }
+
+
+
+
+        private void save_AddStudent_ButtonActionPerformed(java.awt.event.ActionEvent evt){
+
+            String stdFname = student_FirstName_TextField.getText();
+            String stdLname = student_LastName_TextField.getText();
+            String StudentId = student_email_TextField.getText();
+            Object obj = student_Gender_ComboBox.getSelectedItem();
+            String stdGender = (String) obj;
+            String stdPhoneno = student_Mobile_TextField.getText();
+            String password =student_Password_PasswordField.getText();
+            String confirmPassword = student_ConfirmPassword_PasswordField.getText();
+            String semester = (String) semester_ComboBox.getSelectedItem();
+            String course = (String)courseName_ComboBox.getSelectedItem();
+            String parentsphone = parents_mobile_TextField.getText();
+            String parentsemail = parents_Email_TextField.getText();
+            if (password.equals(confirmPassword)) {
+
+                Student std = new Student(StudentId, stdFname,stdLname ,stdGender,stdPhoneno, password,course,semester, parentsphone, parentsemail);
+                StudentController sc = new StudentController();
+                int insert = sc.addStudent(std);
+                if (insert > 0)
+                    javax.swing.JOptionPane.showMessageDialog(null, "Successfully registered");
+                else
+                    javax.swing.JOptionPane.showMessageDialog(null, "Failed to register");
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(null, "Password and Confirm Password does not match");
+                student_Password_PasswordField.requestFocus();
+            }
+
+        }
 
     private void home_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         add_Faculty_Panel.setVisible(false);

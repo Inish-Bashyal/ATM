@@ -4,6 +4,10 @@
  */
 package teacherDashboard;
 
+import javax.swing.JComboBox;
+import controller.StudentController;
+import model.Student;
+
 /**
  *
  * @author inishbashyal
@@ -19,8 +23,6 @@ public class TeacherHome extends javax.swing.JFrame {
         add_Student_Panel.setVisible(false);
         student_List_Panel.setVisible(false);
         add_Attendance_Panel.setVisible(false);
-        attendance_List_Panel.setVisible(false);
-        semesterAttendance_Panel.setVisible(false);
 
     }
 
@@ -85,26 +87,6 @@ public class TeacherHome extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         date_AddAttendance_Calendar = new com.toedter.calendar.JDateChooser();
-        submit_AddAttendance_Button = new javax.swing.JButton();
-        reset_AddAttendance_Button = new javax.swing.JButton();
-        attendance_List_Panel = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        attendance_List_Table = new javax.swing.JTable();
-        subjectName_AttendanceList_Label = new javax.swing.JLabel();
-        studentName_AttendanceList_TextField = new javax.swing.JTextField();
-        studentName_AttendanceList_Label = new javax.swing.JLabel();
-        subjectName_AttendanceList_TextField = new javax.swing.JTextField();
-        search_AttendanceList_Button = new javax.swing.JButton();
-        reset_AttendanceList_Button = new javax.swing.JButton();
-        semesterAttendance_Panel = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        courseName_SemesterAttendance_Label = new javax.swing.JLabel();
-        courseName_SemesterAttendance_ComboBox = new javax.swing.JComboBox<>();
-        semster_SemesterAttendance_Label = new javax.swing.JLabel();
-        semester_SemesterAttendance_ComboBox = new javax.swing.JComboBox<>();
-        submit_SemesterAttendance_Button = new javax.swing.JButton();
-        reset_SemesterAttendance_Button = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         home_Menu = new javax.swing.JMenu();
         home_MenuItem = new javax.swing.JMenuItem();
@@ -136,7 +118,7 @@ public class TeacherHome extends javax.swing.JFrame {
                         .addGroup(home_PanelLayout.createSequentialGroup()
                                 .addGap(119, 119, 119)
                                 .addComponent(jLabel1)
-                                .addContainerGap(419, Short.MAX_VALUE))
+                                .addContainerGap(404, Short.MAX_VALUE))
         );
 
         jLabel4.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
@@ -144,17 +126,17 @@ public class TeacherHome extends javax.swing.JFrame {
 
         courseName_Label.setText("Course Name");
 
-        semester_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        semester_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Semester 1", "Semester 2", "Semester 3" }));
 
         semester_Label.setText("Semester");
 
-        courseName_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        courseName_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ethical", "Computing" }));
 
         student_FirstName_Label.setText("First Name");
 
         student_LastName_Label.setText("Last Name");
 
-        email_Label.setText("Email ID :");
+        email_Label.setText("Student ID :");
 
         student_email_TextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -164,7 +146,7 @@ public class TeacherHome extends javax.swing.JFrame {
 
         jLabel15.setText("Gender :");
 
-        student_Gender_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        student_Gender_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female", "Others" }));
 
         student_Password_Label.setText("Password");
 
@@ -183,6 +165,12 @@ public class TeacherHome extends javax.swing.JFrame {
         save_AddStudent_Button.setBackground(new java.awt.Color(0, 0, 255));
         save_AddStudent_Button.setForeground(new java.awt.Color(255, 255, 255));
         save_AddStudent_Button.setText("SAVE");
+        save_AddStudent_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                save_AddStudent_ButtonActionPerformed(evt);
+            }
+        });
+    
 
         reset_AddStudent_Button.setBackground(new java.awt.Color(0, 0, 255));
         reset_AddStudent_Button.setForeground(new java.awt.Color(255, 255, 255));
@@ -307,7 +295,7 @@ public class TeacherHome extends javax.swing.JFrame {
                                 .addGroup(add_Student_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(save_AddStudent_Button)
                                         .addComponent(reset_AddStudent_Button))
-                                .addContainerGap(67, Short.MAX_VALUE))
+                                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         jLabel5.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
@@ -422,7 +410,7 @@ public class TeacherHome extends javax.swing.JFrame {
                                 .addGroup(student_List_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(new_StudentList_Button)
                                         .addComponent(delete_StudentList_Button))
-                                .addContainerGap(92, Short.MAX_VALUE))
+                                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         jLabel2.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
@@ -434,38 +422,23 @@ public class TeacherHome extends javax.swing.JFrame {
 
         jLabel6.setText("Date : ");
 
-        submit_AddAttendance_Button.setBackground(new java.awt.Color(0, 0, 255));
-        submit_AddAttendance_Button.setForeground(new java.awt.Color(255, 255, 255));
-        submit_AddAttendance_Button.setText("SUBMIT");
-
-        reset_AddAttendance_Button.setBackground(new java.awt.Color(0, 0, 255));
-        reset_AddAttendance_Button.setForeground(new java.awt.Color(255, 255, 255));
-        reset_AddAttendance_Button.setText("RESET");
-
         javax.swing.GroupLayout add_Attendance_PanelLayout = new javax.swing.GroupLayout(add_Attendance_Panel);
         add_Attendance_Panel.setLayout(add_Attendance_PanelLayout);
         add_Attendance_PanelLayout.setHorizontalGroup(
                 add_Attendance_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(add_Attendance_PanelLayout.createSequentialGroup()
+                                .addContainerGap()
                                 .addGroup(add_Attendance_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2)
                                         .addGroup(add_Attendance_PanelLayout.createSequentialGroup()
-                                                .addContainerGap()
                                                 .addGroup(add_Attendance_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel2)
-                                                        .addGroup(add_Attendance_PanelLayout.createSequentialGroup()
-                                                                .addGroup(add_Attendance_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(jLabel3)
-                                                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                .addGap(90, 90, 90)
-                                                                .addGroup(add_Attendance_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(date_AddAttendance_Calendar, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(jLabel6)))))
-                                        .addGroup(add_Attendance_PanelLayout.createSequentialGroup()
-                                                .addGap(114, 114, 114)
-                                                .addComponent(submit_AddAttendance_Button)
-                                                .addGap(140, 140, 140)
-                                                .addComponent(reset_AddAttendance_Button)))
-                                .addGap(100, 404, Short.MAX_VALUE))
+                                                        .addComponent(jLabel3)
+                                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(229, 229, 229)
+                                                .addGroup(add_Attendance_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel6)
+                                                        .addComponent(date_AddAttendance_Calendar, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addContainerGap(265, Short.MAX_VALUE))
         );
         add_Attendance_PanelLayout.setVerticalGroup(
                 add_Attendance_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -483,182 +456,13 @@ public class TeacherHome extends javax.swing.JFrame {
                                         .addGroup(add_Attendance_PanelLayout.createSequentialGroup()
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                                                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(39, 39, 39)
-                                .addGroup(add_Attendance_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(submit_AddAttendance_Button)
-                                        .addComponent(reset_AddAttendance_Button))
-                                .addGap(317, 317, 317))
-        );
-
-        jLabel7.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
-        jLabel7.setText("Attendance List");
-
-        attendance_List_Table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null}
-                },
-                new String [] {
-                        "#", "Subject Name", "Student Name", "Semester", "Status"
-                }
-        ) {
-            Class[] types = new Class [] {
-                    java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(attendance_List_Table);
-
-        subjectName_AttendanceList_Label.setText("Subject Name");
-
-        studentName_AttendanceList_Label.setText("Student Name");
-
-        search_AttendanceList_Button.setBackground(new java.awt.Color(0, 0, 255));
-        search_AttendanceList_Button.setForeground(new java.awt.Color(255, 255, 255));
-        search_AttendanceList_Button.setText("SEARCH");
-
-        reset_AttendanceList_Button.setBackground(new java.awt.Color(0, 0, 255));
-        reset_AttendanceList_Button.setForeground(new java.awt.Color(255, 255, 255));
-        reset_AttendanceList_Button.setText("RESET");
-
-        javax.swing.GroupLayout attendance_List_PanelLayout = new javax.swing.GroupLayout(attendance_List_Panel);
-        attendance_List_Panel.setLayout(attendance_List_PanelLayout);
-        attendance_List_PanelLayout.setHorizontalGroup(
-                attendance_List_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(attendance_List_PanelLayout.createSequentialGroup()
-                                .addGroup(attendance_List_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(attendance_List_PanelLayout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addGroup(attendance_List_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel7)
-                                                        .addGroup(attendance_List_PanelLayout.createSequentialGroup()
-                                                                .addComponent(subjectName_AttendanceList_Label)
-                                                                .addGap(24, 24, 24)
-                                                                .addComponent(subjectName_AttendanceList_TextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addComponent(studentName_AttendanceList_Label)
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                .addComponent(studentName_AttendanceList_TextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(34, 34, 34)
-                                                                .addComponent(search_AttendanceList_Button)
-                                                                .addGap(37, 37, 37)
-                                                                .addComponent(reset_AttendanceList_Button))))
-                                        .addGroup(attendance_List_PanelLayout.createSequentialGroup()
-                                                .addGap(14, 14, 14)
-                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 994, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap(18, Short.MAX_VALUE))
-        );
-        attendance_List_PanelLayout.setVerticalGroup(
-                attendance_List_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(attendance_List_PanelLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel7)
-                                .addGap(35, 35, 35)
-                                .addGroup(attendance_List_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(subjectName_AttendanceList_Label)
-                                        .addComponent(studentName_AttendanceList_TextField, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(studentName_AttendanceList_Label)
-                                        .addComponent(subjectName_AttendanceList_TextField, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(search_AttendanceList_Button)
-                                        .addComponent(reset_AttendanceList_Button))
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 388, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(32, Short.MAX_VALUE))
-        );
-
-        jLabel8.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
-        jLabel8.setText("Semester Attendance");
-
-        courseName_SemesterAttendance_Label.setText("Course Name");
-
-        courseName_SemesterAttendance_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        semster_SemesterAttendance_Label.setText("Semester");
-
-        semester_SemesterAttendance_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        submit_SemesterAttendance_Button.setBackground(new java.awt.Color(0, 0, 255));
-        submit_SemesterAttendance_Button.setForeground(new java.awt.Color(255, 255, 255));
-        submit_SemesterAttendance_Button.setText("SUBMIT");
-
-        reset_SemesterAttendance_Button.setBackground(new java.awt.Color(0, 0, 255));
-        reset_SemesterAttendance_Button.setForeground(new java.awt.Color(255, 255, 255));
-        reset_SemesterAttendance_Button.setText("RESET");
-
-        javax.swing.GroupLayout semesterAttendance_PanelLayout = new javax.swing.GroupLayout(semesterAttendance_Panel);
-        semesterAttendance_Panel.setLayout(semesterAttendance_PanelLayout);
-        semesterAttendance_PanelLayout.setHorizontalGroup(
-                semesterAttendance_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(semesterAttendance_PanelLayout.createSequentialGroup()
-                                .addGroup(semesterAttendance_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(semesterAttendance_PanelLayout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addComponent(jLabel8))
-                                        .addGroup(semesterAttendance_PanelLayout.createSequentialGroup()
-                                                .addGroup(semesterAttendance_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addGroup(semesterAttendance_PanelLayout.createSequentialGroup()
-                                                                .addGap(18, 18, 18)
-                                                                .addComponent(courseName_SemesterAttendance_Label))
-                                                        .addGroup(semesterAttendance_PanelLayout.createSequentialGroup()
-                                                                .addContainerGap()
-                                                                .addComponent(courseName_SemesterAttendance_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                .addGap(97, 97, 97)
-                                                .addGroup(semesterAttendance_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(semster_SemesterAttendance_Label)
-                                                        .addGroup(semesterAttendance_PanelLayout.createSequentialGroup()
-                                                                .addComponent(semester_SemesterAttendance_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(44, 44, 44)
-                                                                .addComponent(submit_SemesterAttendance_Button)
-                                                                .addGap(39, 39, 39)
-                                                                .addComponent(reset_SemesterAttendance_Button)))))
-                                .addContainerGap(223, Short.MAX_VALUE))
-        );
-        semesterAttendance_PanelLayout.setVerticalGroup(
-                semesterAttendance_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(semesterAttendance_PanelLayout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel8)
-                                .addGap(30, 30, 30)
-                                .addGroup(semesterAttendance_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(courseName_SemesterAttendance_Label)
-                                        .addComponent(semster_SemesterAttendance_Label))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(semesterAttendance_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(courseName_SemesterAttendance_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(semester_SemesterAttendance_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(submit_SemesterAttendance_Button)
-                                        .addComponent(reset_SemesterAttendance_Button))
-                                .addContainerGap(414, Short.MAX_VALUE))
+                                .addGap(385, 385, 385))
         );
 
         layered_Panel.setLayer(home_Panel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         layered_Panel.setLayer(add_Student_Panel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         layered_Panel.setLayer(student_List_Panel, javax.swing.JLayeredPane.DEFAULT_LAYER);
         layered_Panel.setLayer(add_Attendance_Panel, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        layered_Panel.setLayer(attendance_List_Panel, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        layered_Panel.setLayer(semesterAttendance_Panel, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout layered_PanelLayout = new javax.swing.GroupLayout(layered_Panel);
         layered_Panel.setLayout(layered_PanelLayout);
@@ -681,12 +485,6 @@ public class TeacherHome extends javax.swing.JFrame {
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layered_PanelLayout.createSequentialGroup()
                                         .addComponent(add_Attendance_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addContainerGap()))
-                        .addGroup(layered_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(attendance_List_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGroup(layered_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layered_PanelLayout.createSequentialGroup()
-                                        .addComponent(semesterAttendance_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addContainerGap()))
         );
         layered_PanelLayout.setVerticalGroup(
                 layered_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -707,16 +505,6 @@ public class TeacherHome extends javax.swing.JFrame {
                                 .addGroup(layered_PanelLayout.createSequentialGroup()
                                         .addComponent(add_Attendance_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(0, 15, Short.MAX_VALUE)))
-                        .addGroup(layered_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layered_PanelLayout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addComponent(attendance_List_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addContainerGap()))
-                        .addGroup(layered_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layered_PanelLayout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addComponent(semesterAttendance_Panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addContainerGap()))
         );
 
         home_Menu.setText("Home");
@@ -762,19 +550,9 @@ public class TeacherHome extends javax.swing.JFrame {
         attendance_Menu.add(addAttendance_MenuItem);
 
         attendanceList_MenuItem.setText("Attendance List");
-        attendanceList_MenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                attendanceList_MenuItemActionPerformed(evt);
-            }
-        });
         attendance_Menu.add(attendanceList_MenuItem);
 
         semesterAttendance_MenuItem.setText("Semester Attendance");
-        semesterAttendance_MenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                semesterAttendance_MenuItemActionPerformed(evt);
-            }
-        });
         attendance_Menu.add(semesterAttendance_MenuItem);
 
         jMenuBar1.add(attendance_Menu);
@@ -805,8 +583,6 @@ public class TeacherHome extends javax.swing.JFrame {
         add_Student_Panel.setVisible(true);
         student_List_Panel.setVisible(false);
         add_Attendance_Panel.setVisible(false);
-        attendance_List_Panel.setVisible(false);
-        semesterAttendance_Panel.setVisible(false);
 
     }
 
@@ -816,8 +592,6 @@ public class TeacherHome extends javax.swing.JFrame {
         add_Student_Panel.setVisible(false);
         student_List_Panel.setVisible(false);
         add_Attendance_Panel.setVisible(true);
-        attendance_List_Panel.setVisible(false);
-        semesterAttendance_Panel.setVisible(false);
     }
 
     private void student_email_TextFieldActionPerformed(java.awt.event.ActionEvent evt) {
@@ -830,8 +604,6 @@ public class TeacherHome extends javax.swing.JFrame {
         add_Student_Panel.setVisible(false);
         student_List_Panel.setVisible(false);
         add_Attendance_Panel.setVisible(false);
-        attendance_List_Panel.setVisible(false);
-        semesterAttendance_Panel.setVisible(false);
 
     }
 
@@ -841,30 +613,39 @@ public class TeacherHome extends javax.swing.JFrame {
         add_Student_Panel.setVisible(false);
         student_List_Panel.setVisible(true);
         add_Attendance_Panel.setVisible(false);
-        attendance_List_Panel.setVisible(false);
-        semesterAttendance_Panel.setVisible(false);
 
     }
 
-    private void attendanceList_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-        home_Panel.setVisible(false);
-        add_Student_Panel.setVisible(false);
-        student_List_Panel.setVisible(false);
-        add_Attendance_Panel.setVisible(false);
-        attendance_List_Panel.setVisible(true);
-        semesterAttendance_Panel.setVisible(false);
+    private void save_AddStudent_ButtonActionPerformed (java.awt.event.ActionEvent evt){
+
+        String stdFname = student_FirstName_TextField.getText();
+        String stdLname = student_LastName_TextField.getText();
+        String StudentId = student_email_TextField.getText();
+        Object obj = student_Gender_ComboBox.getSelectedItem();
+        String stdGender = (String) obj;
+        String stdPhoneno = student_Mobile_TextField.getText();
+        String password =student_Password_PasswordField.getText();
+        String confirmPassword = student_ConfirmPassword_PasswordField.getText();
+        String semester = (String) semester_ComboBox.getSelectedItem();
+        String course = (String)courseName_ComboBox.getSelectedItem();
+        String parentsphone = parents_mobile_TextField.getText();
+        String parentsemail = parents_Email_TextField.getText();
+        if (password.equals(confirmPassword)) {
+
+            Student std = new Student(StudentId, stdFname,stdLname ,stdGender,stdPhoneno, password,course,semester, parentsphone, parentsemail);
+            StudentController sc = new StudentController();
+            int insert = sc.addStudent(std);
+            if (insert > 0)
+                javax.swing.JOptionPane.showMessageDialog(null, "Successfully registered");
+            else
+                javax.swing.JOptionPane.showMessageDialog(null, "Failed to register");
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(null, "Password and Confirm Password does not match");
+            student_Password_PasswordField.requestFocus();
+        }
+
     }
 
-    private void semesterAttendance_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-        home_Panel.setVisible(false);
-        add_Student_Panel.setVisible(false);
-        student_List_Panel.setVisible(false);
-        add_Attendance_Panel.setVisible(false);
-        attendance_List_Panel.setVisible(false);
-        semesterAttendance_Panel.setVisible(true);
-    }
 
     /**
      * @param args the command line arguments
@@ -907,13 +688,9 @@ public class TeacherHome extends javax.swing.JFrame {
     private javax.swing.JPanel add_Attendance_Panel;
     private javax.swing.JPanel add_Student_Panel;
     private javax.swing.JMenuItem attendanceList_MenuItem;
-    private javax.swing.JPanel attendance_List_Panel;
-    private javax.swing.JTable attendance_List_Table;
     private javax.swing.JMenu attendance_Menu;
     private javax.swing.JComboBox<String> courseName_ComboBox;
     private javax.swing.JLabel courseName_Label;
-    private javax.swing.JComboBox<String> courseName_SemesterAttendance_ComboBox;
-    private javax.swing.JLabel courseName_SemesterAttendance_Label;
     private com.toedter.calendar.JDateChooser date_AddAttendance_Calendar;
     private javax.swing.JButton delete_StudentList_Button;
     private javax.swing.JLabel email_Label;
@@ -932,11 +709,8 @@ public class TeacherHome extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lastName_StudentList_Label;
     private javax.swing.JTextField lastName_StudentList_TextField;
@@ -946,24 +720,15 @@ public class TeacherHome extends javax.swing.JFrame {
     private javax.swing.JTextField parents_Email_TextField;
     private javax.swing.JLabel parents_Mobile_Label;
     private javax.swing.JTextField parents_mobile_TextField;
-    private javax.swing.JButton reset_AddAttendance_Button;
     private javax.swing.JButton reset_AddStudent_Button;
-    private javax.swing.JButton reset_AttendanceList_Button;
-    private javax.swing.JButton reset_SemesterAttendance_Button;
     private javax.swing.JButton reset_StudentList_Button;
     private javax.swing.JButton save_AddStudent_Button;
-    private javax.swing.JButton search_AttendanceList_Button;
     private javax.swing.JButton search_StudentList_Button;
     private javax.swing.JMenuItem semesterAttendance_MenuItem;
-    private javax.swing.JPanel semesterAttendance_Panel;
     private javax.swing.JComboBox<String> semester_ComboBox;
     private javax.swing.JLabel semester_Label;
-    private javax.swing.JComboBox<String> semester_SemesterAttendance_ComboBox;
-    private javax.swing.JLabel semster_SemesterAttendance_Label;
     private javax.swing.JMenuItem studentList_MenuItem;
     private javax.swing.JTable studentList_Table;
-    private javax.swing.JLabel studentName_AttendanceList_Label;
-    private javax.swing.JTextField studentName_AttendanceList_TextField;
     private javax.swing.JLabel student_ConfirmPassword_Label;
     private javax.swing.JPasswordField student_ConfirmPassword_PasswordField;
     private javax.swing.JLabel student_DateOfBirth_Label;
@@ -980,9 +745,5 @@ public class TeacherHome extends javax.swing.JFrame {
     private javax.swing.JPasswordField student_Password_PasswordField;
     private javax.swing.JTextField student_email_TextField;
     private javax.swing.JMenu student_menu;
-    private javax.swing.JLabel subjectName_AttendanceList_Label;
-    private javax.swing.JTextField subjectName_AttendanceList_TextField;
-    private javax.swing.JButton submit_AddAttendance_Button;
-    private javax.swing.JButton submit_SemesterAttendance_Button;
     // End of variables declaration
 }
