@@ -14,7 +14,31 @@ import databaseConnection.databaseconnection;
 public class Facultycontroller {
     databaseconnection db = new databaseconnection();
 
-    public int addFacultyPreparedStatement(Faculty faculty)
+
+    public int registerFacultypreparedStatement(Faculty faculty) {
+        try {
+            String query = "insert into faculty(facFname,facLname,gender,phoneNo," +
+                    "dateOfBirth,username,password) values(?,?,?,?,?,?,?)";
+
+            PreparedStatement st = db.con.prepareStatement(query);
+
+            st.setString(1, faculty.getfacFname());
+            st.setString(2, faculty.getfacLname());
+            st.setString(3, faculty.getGender());
+            st.setString(4, faculty.getPhoneNo());
+            st.setString(5, faculty.getDateOfBirth());
+            st.setString(6, faculty.getUsername());
+            st.setString(7, faculty.getPassword());
+
+            return db.manipulate(st);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+
+    public int registerFaculty(Faculty faculty)
     {
 
         String query;
@@ -29,7 +53,6 @@ public class Facultycontroller {
                 faculty.getPassword()+"');";
 
         return db.manipulate(query);
-
 
 
     }
@@ -73,8 +96,8 @@ public class Facultycontroller {
                 Faculty faculty = new Faculty();
 
                 faculty.setLoginId(rs.getInt("LoginId"));
-                faculty.setfacFname(rs.getString("factFname"));
-                faculty.setfacLname(rs.getString("factLname"));
+                faculty.setfacFname(rs.getString("facFname"));
+                faculty.setfacLname(rs.getString("facLname"));
                 faculty.setGender(rs.getString("gender"));
                 faculty.setPhoneNo(rs.getString("phoneNo"));
                 faculty.setDateOfBirth(rs.getString("dateOfBirth"));

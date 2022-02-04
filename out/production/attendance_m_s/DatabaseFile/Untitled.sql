@@ -1,7 +1,7 @@
 create database attendancemanagementsystem;
 use attendancemanagementsystem;
 show tables;
-drop table faculty;
+
 create table faculty(
 loginId int primary key auto_increment,
 facFname varchar(20),
@@ -13,19 +13,20 @@ username varchar(20),
 password varchar(20)
 );
 
-
 create table students(
-StudentId varchar(30) primary key,
-stdFname varchar(20),
-stdLname varchar(20),
+StudentId varchar(30) primary key, 
+stdFname varchar(20), 
+stdLname varchar(20), 
 stdGender varchar(10),
-stdPhoneno varchar(10),
-stdPassword varchar(20),
-stdCourse varchar(20),
+stdPhoneno varchar(10), 
+stdPassword varchar(20), 
+stdCourse varchar(20), 
 stdSemester varchar(15),
-stdPphoneno varchar(10),
+stdPphoneno varchar(10), 
 stdPemail varchar(30)
 );
+
+
 
 select * from faculty;
 select * from students;
