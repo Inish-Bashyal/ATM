@@ -42,22 +42,22 @@ public class Student {
     public String getstdFname(){
         return stdFname;
     }
-    public void setstdFname(){
-        this.stdFname = stdFname;
+    public void setstdFname(String stdFname){
+        this.stdFname = this.stdFname;
     }
 
     public String getstdLname(){
         return stdLname;
     }
-    public void setstdLname(){
-        this.stdLname = stdLname;
+    public void setstdLname(String stdLname){
+        this.stdLname = this.stdLname;
     }
 
     public String getstdGender(){
         return stdGender;
     }
-    public void setstdGender(){
-        this.stdGender = stdGender;
+    public void setstdGender(String stdGender){
+        this.stdGender = this.stdGender;
     }
 
     public String getstdPassword(){
@@ -70,36 +70,36 @@ public class Student {
     public String getstdPhoneno(){
         return stdPhnoneno;
     }
-    public void setstdPhoneno(){
+    public void setstdPhoneno(String stdPhoneno){
         this.stdPhnoneno = stdPhnoneno;
     }
 
     public String getstdCourse(){
         return stdCourse;
     }
-    public void setstdCourse(){
-        this.stdCourse = stdCourse;
+    public void setstdCourse(String stdCourse){
+        this.stdCourse = this.stdCourse;
     }
 
     public String getstdSemester(){
         return stdSemester;
     }
-    public void setstdSemester(){
-        this.stdSemester = stdSemester;
+    public void setstdSemester(String stdSemester){
+        this.stdSemester = this.stdSemester;
     }
 
     public String getstdPphoneno(){
         return stdPphoneno;
     }
-    public void setstdPphoneno(){
-        this.stdPphoneno = stdPphoneno;
+    public void setstdPphoneno(String stdPphoneno){
+        this.stdPphoneno = this.stdPphoneno;
     }
 
     public String getstdPemail(){
         return stdPemail;
     }
-    public void setstdPemail(){
-        this.stdPemail = stdPemail;
+    public void setstdPemail(String stdPemail){
+        this.stdPemail = this.stdPemail;
     }
 
 

@@ -4,10 +4,17 @@
  */
 package dashboard;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import controller.CourseController;
 import controller.Facultycontroller;
 import controller.StudentController;
-import model.Faculty;
-import model.Student;
+import controller.SubjectController;
+import model.*;
+
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -21,7 +28,11 @@ import java.util.List;
 public class Home extends javax.swing.JFrame {
 
     Object[] faccolumns = {" #", "First Name", "Last NAME", "Username", "MOBILE NO.", "DATE OF BIRTH", "GENDER", "Action"};
-    DefaultTableModel model;
+    Object[] corcolumns = {" #", "Course Name", "Course Description",  "Action"};
+    Object[] stdcolumns = {" #", "First Name","Last Name", "ID", "Course", "Semester", "Phone No", "GENDER", "Parent's Phone", "Parent's Email", "Action"};
+    Object[] subcolumns = {" #","Subject Code", "Subject Name", "Semester", "Course Name", "Subject Description",  "Action"};
+
+    DefaultTableModel facmodel,stdmodel,cormodel,submodel;
 
 
 
@@ -29,8 +40,12 @@ public class Home extends javax.swing.JFrame {
      * Creates new form Home
      */
     public Home() {
-        fillArray();
+        fillArrayStudent();
+        fillArrayFaculty();
+        fillArrayCourse();
+        fillArraySubject();
         initComponents();
+        setResizable(false);
         add_Faculty_Panel.setVisible(false);
         home_Panel.setVisible(true);
         faculty_List_Panel.setVisible(false);
@@ -56,6 +71,7 @@ public class Home extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
+
         facselectall = new JCheckBox();
         facultyList_Table = new JTable();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -453,14 +469,12 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
-        facultyList_Table = new JTable(model);
+        facultyList_Table = new JTable(facmodel);
         facultyList_Table.setFont(new Font("Serif", Font.ITALIC, 16));
         facultyList_Table.setSelectionBackground(Color.green);
         facultyList_Table.getTableHeader().setBackground(Color.yellow);
         facultyList_Table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 16));
         add(new JScrollPane(facultyList_Table), BorderLayout.CENTER);
-
-
         jScrollPane1.setViewportView(facultyList_Table);
 
         new_FacultyList_Button.setBackground(new java.awt.Color(51, 153, 0));
@@ -537,13 +551,15 @@ public class Home extends javax.swing.JFrame {
 
         semester_Label.setText("Semester");
 
-        courseName_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
+
+        courseName_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { }));
+
 
         student_FirstName_Label.setText("First Name");
 
         student_LastName_Label.setText("Last Name");
 
-        email_Label.setText("Email ID :");
+        email_Label.setText("Student ID :");
 
         student_email_TextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -721,21 +737,12 @@ public class Home extends javax.swing.JFrame {
         reset_StudentList_Button.setForeground(new java.awt.Color(255, 255, 255));
         reset_StudentList_Button.setText("RESET");
 
-        studentList_Table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]  {
-                },
-                new String[]  {
-                        "Select All", "#", "Course Name", "Semester", "Roll No.", "Name", "Email", "Date Of Birth", "Gender", "Mobile", "Father Email Id", "Father Mobile", "Action"
-                }
-        ) {
-            Class[] types = new Class[]{
-                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
-            }
-        });
+        studentList_Table = new JTable(stdmodel);
+        studentList_Table.setFont(new Font("Serif", Font.ITALIC, 16));
+        studentList_Table.setSelectionBackground(Color.green);
+        studentList_Table.getTableHeader().setBackground(Color.yellow);
+        studentList_Table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 16));
+        add(new JScrollPane(studentList_Table), BorderLayout.CENTER);
         jScrollPane2.setViewportView(studentList_Table);
 
         new_StudentList_Button.setBackground(new java.awt.Color(51, 153, 0));
@@ -879,33 +886,12 @@ public class Home extends javax.swing.JFrame {
         reset_CourseList_Label.setForeground(new java.awt.Color(255, 255, 255));
         reset_CourseList_Label.setText("RESET");
 
-        courseList_Table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null}
-                },
-                new String[]{
-                        "Select All", "#", "Name", "Descirption", "Action"
-                }
-        ) {
-            Class[] types = new Class[]{
-                    java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
-            }
-        });
+        courseList_Table = new JTable(cormodel);
+        courseList_Table.setFont(new Font("Serif", Font.ITALIC, 16));
+        courseList_Table.setSelectionBackground(Color.green);
+        courseList_Table.getTableHeader().setBackground(Color.yellow);
+        courseList_Table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 16));
+        add(new JScrollPane(courseList_Table), BorderLayout.CENTER);
         jScrollPane3.setViewportView(courseList_Table);
 
         new_CourseList_Button.setBackground(new java.awt.Color(51, 153, 0));
@@ -969,11 +955,13 @@ public class Home extends javax.swing.JFrame {
 
         courseName_AddSubject_Label.setText("Course Name");
 
-        semester_AddSubject_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
+
+        semester_AddSubject_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Semester 1", "Semester 2","Semester 3","Semester 4","Semester 5","Semester 6" }));
 
         semester_AddSubject_Label.setText("Semester");
 
-        courseName_AddSubject_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
+        courseName_AddSubject_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { }));
+
 
         subjectName_AddSubject_Label.setText("Name");
 
@@ -984,6 +972,12 @@ public class Home extends javax.swing.JFrame {
         save_AddSubject_Button.setBackground(new java.awt.Color(0, 0, 255));
         save_AddSubject_Button.setForeground(new java.awt.Color(255, 255, 255));
         save_AddSubject_Button.setText("SAVE");
+
+        save_AddSubject_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                save_AddSubject_ButtonActionPerformed(evt);
+            }
+        });
 
         reset_AddSubject_Button.setBackground(new java.awt.Color(0, 0, 255));
         reset_AddSubject_Button.setForeground(new java.awt.Color(255, 255, 255));
@@ -1067,37 +1061,12 @@ public class Home extends javax.swing.JFrame {
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("RESET");
 
-        subjectList_Table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null}
-                },
-                new String[]{
-                        "Select All", "#", "Course Name", "Subject Name", "Semester", "Subject Code", "Action"
-                }
-        ) {
-            Class[] types = new Class[]{
-                    java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
-            }
-        });
+        subjectList_Table = new JTable(submodel);
+        subjectList_Table.setFont(new Font("Serif", Font.ITALIC, 16));
+        subjectList_Table.setSelectionBackground(Color.green);
+        subjectList_Table.getTableHeader().setBackground(Color.yellow);
+        subjectList_Table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 16));
+        add(new JScrollPane(subjectList_Table), BorderLayout.CENTER);
         jScrollPane4.setViewportView(subjectList_Table);
 
         new_SubjectList_Button.setBackground(new java.awt.Color(51, 153, 0));
@@ -1170,7 +1139,7 @@ public class Home extends javax.swing.JFrame {
 
         facultyName_AddAssignFaculty_Label.setText("Faculty Name");
 
-        facultyName_AddAssignFaculty_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
+        facultyName_AddAssignFaculty_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{}));
         facultyName_AddAssignFaculty_ComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 facultyName_AddAssignFaculty_ComboBoxActionPerformed(evt);
@@ -1179,7 +1148,7 @@ public class Home extends javax.swing.JFrame {
 
         subjectName_AddAssignFaculty_Label.setText("Subject Name");
 
-        facsubjectName_AddAssignFaculty_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
+        facsubjectName_AddAssignFaculty_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{}));
 
         totalClass_AddAssignFaculty_Label.setText("Total Class");
 
@@ -1458,6 +1427,7 @@ public class Home extends javax.swing.JFrame {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 home_MenuItemActionPerformed(evt);
             }
+
         });
         home_Menu.add(home_MenuItem);
 
@@ -1610,8 +1580,43 @@ public class Home extends javax.swing.JFrame {
         add_Subject_Panel.setVisible(false);
         subject_List_Panel.setVisible(false);
         add_Assign_Faculty_Panel.setVisible(false);
-        assign_Faculty_List_Panel.setVisible(false);
-    }
+
+        assign_Faculty_List_Panel.setVisible(false);   
+
+
+        Connection con;
+        java.sql.Statement st;
+        try {
+                String username = "root";
+                String password = "B@shyal2015";
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                // create the connection object
+                con = DriverManager.getConnection(
+                        "jdbc:mysql://localhost:3306/attendancemanagementsystem", username, password);
+
+                        st = con.createStatement();
+                
+
+                ResultSet rs =  st.executeQuery("select coursename from course");
+        
+
+                while(rs.next()){
+                        String coursename = rs.getString("coursename");
+                        courseName_ComboBox.addItem(coursename);  
+                }
+       
+        
+                con.close();
+} catch (SQLException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+} catch (ClassNotFoundException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+}
+
+}
+
 
     private void AddAssignFaculty_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         add_Faculty_Panel.setVisible(false);
@@ -1625,6 +1630,68 @@ public class Home extends javax.swing.JFrame {
         subject_List_Panel.setVisible(false);
         add_Assign_Faculty_Panel.setVisible(true);
         assign_Faculty_List_Panel.setVisible(false);
+
+        Connection con;
+        java.sql.Statement st;
+        try {
+            String username = "root";
+            String password = "B@shyal2015";
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            // create the connection object
+            con = DriverManager.getConnection(
+
+                    "jdbc:mysql://localhost:3306/attendancemanagementsystem", username, password);
+
+            st = con.createStatement();
+
+
+            ResultSet rs =  st.executeQuery("select facFname from faculty");
+
+
+            while(rs.next()){
+                String facFname = rs.getString("facFname");
+                facultyName_AddAssignFaculty_ComboBox.addItem(facFname);
+            }
+
+            con.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+        try {
+            String username = "root";
+            String password = "B@shyal2015";
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            // create the connection object
+            con = DriverManager.getConnection(
+
+                    "jdbc:mysql://localhost:3306/attendancemanagementsystem", username, password);
+
+            st = con.createStatement();
+
+
+            ResultSet rs =  st.executeQuery("select subjectname from subject");
+
+
+            while(rs.next()){
+                String subjectname = rs.getString("subjectname");
+                facsubjectName_AddAssignFaculty_ComboBox.addItem(subjectname);
+            }
+
+
+            con.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     private void home_MenuActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1687,6 +1754,7 @@ public class Home extends javax.swing.JFrame {
     }
 
     private void CourseList_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+        fillArrayCourse();
         add_Faculty_Panel.setVisible(false);
         home_Panel.setVisible(false);
         faculty_List_Panel.setVisible(false);
@@ -1701,6 +1769,7 @@ public class Home extends javax.swing.JFrame {
     }
 
     private void AddSubject_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+
         add_Faculty_Panel.setVisible(false);
         home_Panel.setVisible(false);
         faculty_List_Panel.setVisible(false);
@@ -1711,8 +1780,42 @@ public class Home extends javax.swing.JFrame {
         add_Subject_Panel.setVisible(true);
         subject_List_Panel.setVisible(false);
         add_Assign_Faculty_Panel.setVisible(false);
+
         assign_Faculty_List_Panel.setVisible(false);
-    }
+
+        Connection con;
+        java.sql.Statement st;
+        try {
+                String username = "root";
+                String password = "B@shyal2015";
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                // create the connection object
+                con = DriverManager.getConnection(
+
+                        "jdbc:mysql://localhost:3306/attendancemanagementsystem", username, password);
+
+                        st = con.createStatement();
+
+
+                ResultSet rs =  st.executeQuery("select coursename from course");
+
+
+                while(rs.next()){
+                        String coursename = rs.getString("coursename");
+                        courseName_AddSubject_ComboBox.addItem(coursename);
+                }
+
+
+                con.close();
+} catch (SQLException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+} catch (ClassNotFoundException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+}
+   }
+
 
     private void SubjectList_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         add_Faculty_Panel.setVisible(false);
@@ -1777,7 +1880,9 @@ public class Home extends javax.swing.JFrame {
         if (password.equals(confirmPassword)) {
             Faculty faculty = new Faculty(fname, lname, gender, phone, dateOfBirth, username, password);
             Facultycontroller fc = new Facultycontroller();
+
             int insert = fc.registerFacultypreparedStatement(faculty);
+
             if (insert > 0)
                 javax.swing.JOptionPane.showMessageDialog(null, "Successfully registered");
             else
@@ -1817,6 +1922,7 @@ public class Home extends javax.swing.JFrame {
             student_Password_PasswordField.requestFocus();
         }
 
+
     }
 
     private void home_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1855,6 +1961,41 @@ public class Home extends javax.swing.JFrame {
 
     private void save_AddCourse_ButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+        String coursename = courseName_AddCourse_TextField.getText();
+        String coursedesc = courseDescription_AddCourse_TextField.getText();
+        
+
+        Course cou = new Course(null, coursename,coursedesc);
+        CourseController cc = new CourseController();
+        int insert = cc.registerCoursepreparedStatement(cou);
+        if (insert > 0)
+        javax.swing.JOptionPane.showMessageDialog(null, "Successfully registered");
+    else
+        javax.swing.JOptionPane.showMessageDialog(null, "Failed to register");
+
+//courseName_AddCourse_Label.setText("Name");
+
+//courseDescription_AddCourse_Label.setText("Description");
+}
+
+
+
+    private void save_AddSubject_ButtonActionPerformed(java.awt.event.ActionEvent evt){
+        
+        String subjectcode =  subjectCode_AddSubject_TextField.getText();
+        String coursename = (String) courseName_AddSubject_ComboBox.getSelectedItem();
+        String subjectname =  subjectName_AddSubject_TextField.getText();
+        String semester = (String)semester_AddSubject_ComboBox.getSelectedItem();
+        String desc = subjectDescription_AddSubject_TextField.getText();
+
+        
+        Subject sub = new Subject(subjectcode,subjectname,coursename,desc,semester);
+            SubjectController sc = new SubjectController();
+            int insert = sc.registerSubjectpreparedStatement(sub);
+            if (insert > 0)
+                javax.swing.JOptionPane.showMessageDialog(null, "Successfully registered");
+            else
+                javax.swing.JOptionPane.showMessageDialog(null, "Failed to register");
     }
 
     private void new_SubjectList_ButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1901,13 +2042,14 @@ public class Home extends javax.swing.JFrame {
             public void run() {
 
                 new Home().setVisible(true);
+
             }
         });
     }
 
 
 
-    private void fillArray() {
+    private void fillArrayFaculty() {
         Facultycontroller controller = new Facultycontroller();
         List<Faculty> lstFaculty = controller.getAllFacultys();
 
@@ -1926,9 +2068,75 @@ public class Home extends javax.swing.JFrame {
 
 
         }
-        model = new DefaultTableModel(rows, faccolumns);
+        facmodel = new DefaultTableModel(rows, faccolumns);
 
     }
+
+    private void fillArrayCourse() {
+        CourseController controller = new CourseController();
+        List<Course> lstCourse = controller.getAllCourses();
+
+        String rows[][] = new String[lstCourse.size()][4];
+        // Convert list to array
+        for (int i = 0; i < lstCourse.size(); i++) {
+
+            rows[i][0] = "a";
+            rows[i][1] = lstCourse.get(i).getcoursename();
+            rows[i][2] = lstCourse.get(i).getcoursedesc();
+            rows[i][3] = "a";
+
+
+        }
+        cormodel = new DefaultTableModel(rows, corcolumns);
+
+    }
+
+    private void fillArrayStudent() {
+        StudentController controller = new StudentController();
+        List<Student> lstStudent = controller.getAllStudents();
+
+        String rows[][] = new String[lstStudent.size()][11];
+        // Convert list to array
+        for (int i = 0; i < lstStudent.size(); i++) {
+
+            rows[i][0] = "a";
+            rows[i][1] = lstStudent.get(i).getstdFname();
+            rows[i][2] = lstStudent.get(i).getstdLname();
+            rows[i][3] = lstStudent.get(i).getStudentId();
+            rows[i][4] = lstStudent.get(i).getstdCourse();
+            rows[i][5] = lstStudent.get(i).getstdSemester();
+            rows[i][6] = lstStudent.get(i).getstdPhoneno();
+            rows[i][7] = lstStudent.get(i).getstdGender();
+            rows[i][8] = lstStudent.get(i).getstdPhoneno();
+            rows[i][9] = lstStudent.get(i).getstdPemail();
+            rows[i][10] = "a";
+
+        }
+        stdmodel = new DefaultTableModel(rows, stdcolumns);
+
+    }
+
+    private void fillArraySubject() {
+        SubjectController controller = new SubjectController();
+        List<Subject> lstSubject = controller.getAllSubjects();
+
+        String rows[][] = new String[lstSubject.size()][7];
+        // Convert list to array
+        for (int i = 0; i < lstSubject.size(); i++) {
+
+            rows[i][0] = "A";
+            rows[i][1] = lstSubject.get(i).getsubjectcode();
+            rows[i][2] = lstSubject.get(i).getsubjectname();
+            rows[i][3] = (String) lstSubject.get(i).getsemester();
+            rows[i][4] = (String) lstSubject.get(i).getcoursename();
+            rows[i][5] = lstSubject.get(i).getSubjectdesc();
+            rows[i][6] = "a";
+
+        }
+        submodel = new DefaultTableModel(rows, subcolumns);
+
+    }
+
 
     // Variables declaration - do not modify
     private javax.swing.JMenuItem AddAssignFaculty_MenuItem;

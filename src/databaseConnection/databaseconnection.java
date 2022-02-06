@@ -4,8 +4,8 @@ import java.sql.*;
 
 public class databaseconnection {
 
-    public Connection con;
-    Statement st;
+    public static Connection con;
+    public static Statement st;
     ResultSet rows;
     int val;
 
