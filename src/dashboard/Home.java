@@ -30,9 +30,9 @@ public class Home extends javax.swing.JFrame {
     Object[] faccolumns = {" #", "First Name", "Last NAME", "Username", "MOBILE NO.", "DATE OF BIRTH", "GENDER", "Action"};
     Object[] corcolumns = {" #", "Course Name", "Course Description",  "Action"};
     Object[] stdcolumns = {" #", "First Name","Last Name", "ID", "Course", "Semester", "Phone No", "GENDER", "Parent's Phone", "Parent's Email", "Action"};
-    Object[] subcolumns = {" #","Subject Code", "Subject Name", "Semester", "Course Name", "Subject Description",  "Action"};
 
-    DefaultTableModel facmodel,stdmodel,cormodel,submodel;
+
+    DefaultTableModel facmodel,stdmodel,cormodel;
 
 
 
@@ -43,7 +43,6 @@ public class Home extends javax.swing.JFrame {
         fillArrayStudent();
         fillArrayFaculty();
         fillArrayCourse();
-        fillArraySubject();
         initComponents();
         setResizable(false);
         add_Faculty_Panel.setVisible(false);
@@ -475,6 +474,8 @@ public class Home extends javax.swing.JFrame {
         facultyList_Table.getTableHeader().setBackground(Color.yellow);
         facultyList_Table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 16));
         add(new JScrollPane(facultyList_Table), BorderLayout.CENTER);
+
+
         jScrollPane1.setViewportView(facultyList_Table);
 
         new_FacultyList_Button.setBackground(new java.awt.Color(51, 153, 0));
@@ -892,6 +893,7 @@ public class Home extends javax.swing.JFrame {
         courseList_Table.getTableHeader().setBackground(Color.yellow);
         courseList_Table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 16));
         add(new JScrollPane(courseList_Table), BorderLayout.CENTER);
+
         jScrollPane3.setViewportView(courseList_Table);
 
         new_CourseList_Button.setBackground(new java.awt.Color(51, 153, 0));
@@ -1061,12 +1063,37 @@ public class Home extends javax.swing.JFrame {
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("RESET");
 
-        subjectList_Table = new JTable(submodel);
-        subjectList_Table.setFont(new Font("Serif", Font.ITALIC, 16));
-        subjectList_Table.setSelectionBackground(Color.green);
-        subjectList_Table.getTableHeader().setBackground(Color.yellow);
-        subjectList_Table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 16));
-        add(new JScrollPane(subjectList_Table), BorderLayout.CENTER);
+        subjectList_Table.setModel(new javax.swing.table.DefaultTableModel(
+                new Object[][]{
+                        {null, null, null, null, null, null, null},
+                        {null, null, null, null, null, null, null},
+                        {null, null, null, null, null, null, null},
+                        {null, null, null, null, null, null, null},
+                        {null, null, null, null, null, null, null},
+                        {null, null, null, null, null, null, null},
+                        {null, null, null, null, null, null, null},
+                        {null, null, null, null, null, null, null},
+                        {null, null, null, null, null, null, null},
+                        {null, null, null, null, null, null, null},
+                        {null, null, null, null, null, null, null},
+                        {null, null, null, null, null, null, null},
+                        {null, null, null, null, null, null, null},
+                        {null, null, null, null, null, null, null},
+                        {null, null, null, null, null, null, null},
+                        {null, null, null, null, null, null, null}
+                },
+                new String[]{
+                        "Select All", "#", "Course Name", "Subject Name", "Semester", "Subject Code", "Action"
+                }
+        ) {
+            Class[] types = new Class[]{
+                    java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+        });
         jScrollPane4.setViewportView(subjectList_Table);
 
         new_SubjectList_Button.setBackground(new java.awt.Color(51, 153, 0));
@@ -1139,7 +1166,7 @@ public class Home extends javax.swing.JFrame {
 
         facultyName_AddAssignFaculty_Label.setText("Faculty Name");
 
-        facultyName_AddAssignFaculty_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{}));
+        facultyName_AddAssignFaculty_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
         facultyName_AddAssignFaculty_ComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 facultyName_AddAssignFaculty_ComboBoxActionPerformed(evt);
@@ -1148,7 +1175,7 @@ public class Home extends javax.swing.JFrame {
 
         subjectName_AddAssignFaculty_Label.setText("Subject Name");
 
-        facsubjectName_AddAssignFaculty_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{}));
+        facsubjectName_AddAssignFaculty_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
 
         totalClass_AddAssignFaculty_Label.setText("Total Class");
 
@@ -1630,68 +1657,6 @@ public class Home extends javax.swing.JFrame {
         subject_List_Panel.setVisible(false);
         add_Assign_Faculty_Panel.setVisible(true);
         assign_Faculty_List_Panel.setVisible(false);
-
-        Connection con;
-        java.sql.Statement st;
-        try {
-            String username = "root";
-            String password = "B@shyal2015";
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            // create the connection object
-            con = DriverManager.getConnection(
-
-                    "jdbc:mysql://localhost:3306/attendancemanagementsystem", username, password);
-
-            st = con.createStatement();
-
-
-            ResultSet rs =  st.executeQuery("select facFname from faculty");
-
-
-            while(rs.next()){
-                String facFname = rs.getString("facFname");
-                facultyName_AddAssignFaculty_ComboBox.addItem(facFname);
-            }
-
-            con.close();
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-
-        try {
-            String username = "root";
-            String password = "B@shyal2015";
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            // create the connection object
-            con = DriverManager.getConnection(
-
-                    "jdbc:mysql://localhost:3306/attendancemanagementsystem", username, password);
-
-            st = con.createStatement();
-
-
-            ResultSet rs =  st.executeQuery("select subjectname from subject");
-
-
-            while(rs.next()){
-                String subjectname = rs.getString("subjectname");
-                facsubjectName_AddAssignFaculty_ComboBox.addItem(subjectname);
-            }
-
-
-            con.close();
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
     }
 
     private void home_MenuActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1815,6 +1780,29 @@ public class Home extends javax.swing.JFrame {
         e.printStackTrace();
 }
    }
+   //for assign faculty//
+// ResultSet rs = st.executeQuery("select facFname from Faculty");
+    // while(rs.next()){
+        //         String facFname = rs.getString("facFname");
+        //         facultyName_AddAssignFaculty_ComboBox.addItem(facFname);
+        // }
+
+        //"second method try"//
+//    private void Fillcombo(){
+//            try {   
+//         String sql = "select * from faculty";
+//          pst = conn.prepareStatement(sql);
+//            rs = pst.executeQuery();
+           
+//            while(rs.next()){
+//                    String name = rs.getString("coursename");
+//                    courseName_ComboBox.addItem(coursename);
+//            }
+                   
+//            } catch (Exception e) {
+//                    //TODO: handle exception
+//            }
+
 
 
     private void SubjectList_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1989,7 +1977,7 @@ public class Home extends javax.swing.JFrame {
         String desc = subjectDescription_AddSubject_TextField.getText();
 
         
-        Subject sub = new Subject(subjectcode,subjectname,coursename,desc,semester);
+        Subject sub = new Subject(subjectcode,subjectname,coursename,semester,desc);
             SubjectController sc = new SubjectController();
             int insert = sc.registerSubjectpreparedStatement(sub);
             if (insert > 0)
@@ -2115,28 +2103,6 @@ public class Home extends javax.swing.JFrame {
         stdmodel = new DefaultTableModel(rows, stdcolumns);
 
     }
-
-    private void fillArraySubject() {
-        SubjectController controller = new SubjectController();
-        List<Subject> lstSubject = controller.getAllSubjects();
-
-        String rows[][] = new String[lstSubject.size()][7];
-        // Convert list to array
-        for (int i = 0; i < lstSubject.size(); i++) {
-
-            rows[i][0] = "A";
-            rows[i][1] = lstSubject.get(i).getsubjectcode();
-            rows[i][2] = lstSubject.get(i).getsubjectname();
-            rows[i][3] = (String) lstSubject.get(i).getsemester();
-            rows[i][4] = (String) lstSubject.get(i).getcoursename();
-            rows[i][5] = lstSubject.get(i).getSubjectdesc();
-            rows[i][6] = "a";
-
-        }
-        submodel = new DefaultTableModel(rows, subcolumns);
-
-    }
-
 
     // Variables declaration - do not modify
     private javax.swing.JMenuItem AddAssignFaculty_MenuItem;

@@ -13,7 +13,7 @@ public class Subject {
 
     }
 
-    public Subject(String subjectcode,String subjectname, String coursename,String subjectdesc, String semester) {
+    public Subject(String subjectcode,String coursename, String subjectname,String semester, String subjectdesc) {
         this.subjectcode = subjectcode;
         this.coursename = coursename;
         this.subjectname = subjectname;
@@ -28,7 +28,7 @@ public String getsubjectcode(){
 public void setsubjectcode(String subjectcode){
     this.subjectcode = subjectcode;
 }
-public String getcoursename(){
+public Object getcoursename(){
     return coursename;
 }
 
@@ -44,7 +44,7 @@ public void setsubjectname(String subjectname){
     this.subjectname = subjectname;
 }
 
-public String getsemester(){
+public Object getsemester(){
     return semester;
 }
 
@@ -55,7 +55,7 @@ public String getSubjectdesc() {
     return subjectdesc;
 }
 
-public void setSubjectdesc(String subjectdesc) {
+public void setdesc(String subjectdesc) {
     this.subjectdesc = subjectdesc;
 }
 
