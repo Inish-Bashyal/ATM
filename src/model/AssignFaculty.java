@@ -1,5 +1,7 @@
 package model;
 
+import javax.swing.*;
+
 public class AssignFaculty {
     private int assigncode;
     private String facFname;
@@ -38,5 +40,6 @@ public class AssignFaculty {
     public void setTotalclass(String totalclass){
         this.totalclass=totalclass;
     }
+
 
 }

@@ -9,10 +9,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import controller.CourseController;
-import controller.Facultycontroller;
-import controller.StudentController;
-import controller.SubjectController;
+import controller.*;
 import model.*;
 
 
@@ -27,12 +24,14 @@ import java.util.List;
  */
 public class Home extends javax.swing.JFrame {
 
-    Object[] faccolumns = {" #", "First Name", "Last NAME", "Username", "MOBILE NO.", "DATE OF BIRTH", "GENDER", "Action"};
-    Object[] corcolumns = {" #", "Course Name", "Course Description",  "Action"};
-    Object[] stdcolumns = {" #", "First Name","Last Name", "ID", "Course", "Semester", "Phone No", "GENDER", "Parent's Phone", "Parent's Email", "Action"};
+    Object[] faccolumns = {" #", "First Name", "Last Name", "Username", "MOBILE NO.", "DATE OF BIRTH", "GENDER"};
+    Object[] corcolumns = {" #", "Course Name", "Course Description"};
+    Object[] stdcolumns = {" #", "First Name","Last Name", "ID", "Course", "Semester", "Phone No", "GENDER", "Parent's Phone", "Parent's Email"};
+    Object[] subcolumns = {" #","Subject Code", "Subject Name", "Semester", "Course Name", "Subject Description"};
+    Object[] assigncolumns = {" #", "Faculty Name", "Subject Name",  "Total Class"};
 
 
-    DefaultTableModel facmodel,stdmodel,cormodel;
+    DefaultTableModel facmodel,stdmodel,cormodel,submodel,assignmodel;
 
 
 
@@ -43,6 +42,8 @@ public class Home extends javax.swing.JFrame {
         fillArrayStudent();
         fillArrayFaculty();
         fillArrayCourse();
+        fillArraySubject();
+        fillArrayAssignFaculty();
         initComponents();
         setResizable(false);
         add_Faculty_Panel.setVisible(false);
@@ -70,8 +71,11 @@ public class Home extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
-
-        facselectall = new JCheckBox();
+        edit_AssignFacultyList_Button = new javax.swing.JButton();
+        edit_SubjectList_Button = new javax.swing.JButton();
+        edit_CourseList_Button = new javax.swing.JButton();
+        edit_StudentList_Button = new javax.swing.JButton();
+        edit_FacultyList_Button = new javax.swing.JButton();
         facultyList_Table = new JTable();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuBar2 = new javax.swing.JMenuBar();
@@ -251,24 +255,23 @@ public class Home extends javax.swing.JFrame {
 
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setText("home");
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/dashboard/background.jpeg"))); // NOI18N
 
         javax.swing.GroupLayout home_PanelLayout = new javax.swing.GroupLayout(home_Panel);
         home_Panel.setLayout(home_PanelLayout);
         home_PanelLayout.setHorizontalGroup(
                 home_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(home_PanelLayout.createSequentialGroup()
-                                .addGap(395, 395, 395)
-                                .addComponent(jLabel1)
-                                .addContainerGap(565, Short.MAX_VALUE))
+                                .addGap(91, 91, 91)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 815, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(102, Short.MAX_VALUE))
         );
         home_PanelLayout.setVerticalGroup(
                 home_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(home_PanelLayout.createSequentialGroup()
-                                .addGap(184, 184, 184)
-                                .addComponent(jLabel1)
-                                .addContainerGap(279, Short.MAX_VALUE))
+                                .addContainerGap()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
+                                .addContainerGap())
         );
 
         jLabel2.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
@@ -474,17 +477,35 @@ public class Home extends javax.swing.JFrame {
         facultyList_Table.getTableHeader().setBackground(Color.yellow);
         facultyList_Table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 16));
         add(new JScrollPane(facultyList_Table), BorderLayout.CENTER);
-
-
         jScrollPane1.setViewportView(facultyList_Table);
 
         new_FacultyList_Button.setBackground(new java.awt.Color(51, 153, 0));
         new_FacultyList_Button.setForeground(new java.awt.Color(255, 255, 255));
         new_FacultyList_Button.setText("NEW");
 
+        new_FacultyList_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                add_Faculty_Panel.setVisible(true);
+                home_Panel.setVisible(false);
+                faculty_List_Panel.setVisible(false);
+                student_List_Panel.setVisible(false);
+                add_Student_Panel.setVisible(false);
+                add_Course_Panel.setVisible(false);
+                course_List_Panel.setVisible(false);
+                add_Subject_Panel.setVisible(false);
+                subject_List_Panel.setVisible(false);
+                add_Assign_Faculty_Panel.setVisible(false);
+                assign_Faculty_List_Panel.setVisible(false);            }
+        });
+
         jButton1.setBackground(new java.awt.Color(255, 0, 0));
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("DELETE");
+
+        edit_FacultyList_Button.setBackground(new java.awt.Color(0, 0, 255));
+        edit_FacultyList_Button.setForeground(new java.awt.Color(255, 255, 255));
+        edit_FacultyList_Button.setText("EDIT");
+
 
         javax.swing.GroupLayout faculty_List_PanelLayout = new javax.swing.GroupLayout(faculty_List_Panel);
         faculty_List_Panel.setLayout(faculty_List_PanelLayout);
@@ -517,9 +538,11 @@ public class Home extends javax.swing.JFrame {
                                         .addGroup(faculty_List_PanelLayout.createSequentialGroup()
                                                 .addGap(193, 193, 193)
                                                 .addComponent(new_FacultyList_Button)
-                                                .addGap(207, 207, 207)
-                                                .addComponent(jButton1)))
-                                .addContainerGap(36, Short.MAX_VALUE))
+                                                .addGap(162, 162, 162)
+                                                .addComponent(jButton1)
+                                                .addGap(158, 158, 158)
+                                                .addComponent(edit_FacultyList_Button)))
+                                .addContainerGap(56, Short.MAX_VALUE))
         );
         faculty_List_PanelLayout.setVerticalGroup(
                 faculty_List_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -539,10 +562,10 @@ public class Home extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(faculty_List_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(new_FacultyList_Button)
-                                        .addComponent(jButton1))
+                                        .addComponent(jButton1)
+                                        .addComponent(edit_FacultyList_Button))
                                 .addGap(45, 45, 45))
         );
-
         jLabel4.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
         jLabel4.setText("Add Student");
 
@@ -750,9 +773,61 @@ public class Home extends javax.swing.JFrame {
         new_StudentList_Button.setForeground(new java.awt.Color(255, 255, 255));
         new_StudentList_Button.setText("NEW");
 
+        new_StudentList_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                add_Faculty_Panel.setVisible(false);
+                home_Panel.setVisible(false);
+                faculty_List_Panel.setVisible(false);
+                student_List_Panel.setVisible(false);
+                add_Student_Panel.setVisible(true);
+                add_Course_Panel.setVisible(false);
+                course_List_Panel.setVisible(false);
+                add_Subject_Panel.setVisible(false);
+                subject_List_Panel.setVisible(false);
+                add_Assign_Faculty_Panel.setVisible(false);
+
+                assign_Faculty_List_Panel.setVisible(false);
+
+
+                Connection con;
+                java.sql.Statement st;
+                try {
+                    String username = "root";
+                    String password = "B@shyal2015";
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    // create the connection object
+                    con = DriverManager.getConnection(
+                            "jdbc:mysql://localhost:3306/attendancemanagementsystem", username, password);
+
+                    st = con.createStatement();
+
+
+                    ResultSet rs =  st.executeQuery("select coursename from course");
+
+
+                    while(rs.next()){
+                        String coursename = rs.getString("coursename");
+                        courseName_ComboBox.addItem(coursename);
+                    }
+
+
+                    con.close();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }            }
+        });
+
         delete_StudentList_Button.setBackground(new java.awt.Color(255, 0, 0));
         delete_StudentList_Button.setForeground(new java.awt.Color(255, 255, 255));
         delete_StudentList_Button.setText("DELETE");
+
+        edit_StudentList_Button.setBackground(new java.awt.Color(0, 0, 255));
+        edit_StudentList_Button.setForeground(new java.awt.Color(255, 255, 255));
+        edit_StudentList_Button.setText("EDIT");
 
         javax.swing.GroupLayout student_List_PanelLayout = new javax.swing.GroupLayout(student_List_Panel);
         student_List_Panel.setLayout(student_List_PanelLayout);
@@ -783,10 +858,12 @@ public class Home extends javax.swing.JFrame {
                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                         .addComponent(reset_StudentList_Button)))))
                                         .addGroup(student_List_PanelLayout.createSequentialGroup()
-                                                .addGap(224, 224, 224)
+                                                .addGap(136, 136, 136)
                                                 .addComponent(new_StudentList_Button)
-                                                .addGap(140, 140, 140)
-                                                .addComponent(delete_StudentList_Button)))
+                                                .addGap(125, 125, 125)
+                                                .addComponent(delete_StudentList_Button)
+                                                .addGap(120, 120, 120)
+                                                .addComponent(edit_StudentList_Button)))
                                 .addContainerGap(36, Short.MAX_VALUE))
         );
         student_List_PanelLayout.setVerticalGroup(
@@ -809,7 +886,8 @@ public class Home extends javax.swing.JFrame {
                                 .addGap(34, 34, 34)
                                 .addGroup(student_List_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(new_StudentList_Button)
-                                        .addComponent(delete_StudentList_Button))
+                                        .addComponent(delete_StudentList_Button)
+                                        .addComponent(edit_StudentList_Button))
                                 .addContainerGap(44, Short.MAX_VALUE))
         );
 
@@ -893,7 +971,6 @@ public class Home extends javax.swing.JFrame {
         courseList_Table.getTableHeader().setBackground(Color.yellow);
         courseList_Table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 16));
         add(new JScrollPane(courseList_Table), BorderLayout.CENTER);
-
         jScrollPane3.setViewportView(courseList_Table);
 
         new_CourseList_Button.setBackground(new java.awt.Color(51, 153, 0));
@@ -903,6 +980,10 @@ public class Home extends javax.swing.JFrame {
         delete_CourseList_Button.setBackground(new java.awt.Color(255, 0, 0));
         delete_CourseList_Button.setForeground(new java.awt.Color(255, 255, 255));
         delete_CourseList_Button.setText("DELETE");
+
+        edit_CourseList_Button.setBackground(new java.awt.Color(0, 0, 255));
+        edit_CourseList_Button.setForeground(new java.awt.Color(255, 255, 255));
+        edit_CourseList_Button.setText("EDIT");
 
         javax.swing.GroupLayout course_List_PanelLayout = new javax.swing.GroupLayout(course_List_Panel);
         course_List_Panel.setLayout(course_List_PanelLayout);
@@ -926,10 +1007,12 @@ public class Home extends javax.swing.JFrame {
                                                 .addGap(35, 35, 35)
                                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 897, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(course_List_PanelLayout.createSequentialGroup()
-                                                .addGap(254, 254, 254)
+                                                .addGap(169, 169, 169)
                                                 .addComponent(new_CourseList_Button)
-                                                .addGap(150, 150, 150)
-                                                .addComponent(delete_CourseList_Button)))
+                                                .addGap(141, 141, 141)
+                                                .addComponent(delete_CourseList_Button)
+                                                .addGap(134, 134, 134)
+                                                .addComponent(edit_CourseList_Button)))
                                 .addContainerGap(50, Short.MAX_VALUE))
         );
         course_List_PanelLayout.setVerticalGroup(
@@ -948,7 +1031,8 @@ public class Home extends javax.swing.JFrame {
                                 .addGap(44, 44, 44)
                                 .addGroup(course_List_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(new_CourseList_Button)
-                                        .addComponent(delete_CourseList_Button))
+                                        .addComponent(delete_CourseList_Button)
+                                        .addComponent(edit_CourseList_Button))
                                 .addContainerGap(49, Short.MAX_VALUE))
         );
 
@@ -1063,37 +1147,12 @@ public class Home extends javax.swing.JFrame {
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("RESET");
 
-        subjectList_Table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null}
-                },
-                new String[]{
-                        "Select All", "#", "Course Name", "Subject Name", "Semester", "Subject Code", "Action"
-                }
-        ) {
-            Class[] types = new Class[]{
-                    java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
-            }
-        });
+        subjectList_Table = new JTable(submodel);
+        subjectList_Table.setFont(new Font("Serif", Font.ITALIC, 16));
+        subjectList_Table.setSelectionBackground(Color.green);
+        subjectList_Table.getTableHeader().setBackground(Color.yellow);
+        subjectList_Table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 16));
+        add(new JScrollPane(subjectList_Table), BorderLayout.CENTER);
         jScrollPane4.setViewportView(subjectList_Table);
 
         new_SubjectList_Button.setBackground(new java.awt.Color(51, 153, 0));
@@ -1108,6 +1167,10 @@ public class Home extends javax.swing.JFrame {
         delete_SubjectList_Button.setBackground(new java.awt.Color(255, 0, 0));
         delete_SubjectList_Button.setForeground(new java.awt.Color(255, 255, 255));
         delete_SubjectList_Button.setText("DELETE");
+
+        edit_SubjectList_Button.setBackground(new java.awt.Color(0, 0, 255));
+        edit_SubjectList_Button.setForeground(new java.awt.Color(255, 255, 255));
+        edit_SubjectList_Button.setText("EDIT");
 
         javax.swing.GroupLayout subject_List_PanelLayout = new javax.swing.GroupLayout(subject_List_Panel);
         subject_List_Panel.setLayout(subject_List_PanelLayout);
@@ -1133,10 +1196,12 @@ public class Home extends javax.swing.JFrame {
                                                                 .addComponent(jButton3))
                                                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 933, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addGroup(subject_List_PanelLayout.createSequentialGroup()
-                                                .addGap(203, 203, 203)
+                                                .addGap(143, 143, 143)
                                                 .addComponent(new_SubjectList_Button)
-                                                .addGap(120, 120, 120)
-                                                .addComponent(delete_SubjectList_Button)))
+                                                .addGap(130, 130, 130)
+                                                .addComponent(delete_SubjectList_Button)
+                                                .addGap(138, 138, 138)
+                                                .addComponent(edit_SubjectList_Button)))
                                 .addContainerGap(43, Short.MAX_VALUE))
         );
         subject_List_PanelLayout.setVerticalGroup(
@@ -1157,7 +1222,8 @@ public class Home extends javax.swing.JFrame {
                                 .addGap(34, 34, 34)
                                 .addGroup(subject_List_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(new_SubjectList_Button)
-                                        .addComponent(delete_SubjectList_Button))
+                                        .addComponent(delete_SubjectList_Button)
+                                        .addComponent(edit_SubjectList_Button))
                                 .addContainerGap(52, Short.MAX_VALUE))
         );
 
@@ -1166,7 +1232,7 @@ public class Home extends javax.swing.JFrame {
 
         facultyName_AddAssignFaculty_Label.setText("Faculty Name");
 
-        facultyName_AddAssignFaculty_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
+        facultyName_AddAssignFaculty_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{}));
         facultyName_AddAssignFaculty_ComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 facultyName_AddAssignFaculty_ComboBoxActionPerformed(evt);
@@ -1175,7 +1241,7 @@ public class Home extends javax.swing.JFrame {
 
         subjectName_AddAssignFaculty_Label.setText("Subject Name");
 
-        facsubjectName_AddAssignFaculty_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
+        facsubjectName_AddAssignFaculty_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{}));
 
         totalClass_AddAssignFaculty_Label.setText("Total Class");
 
@@ -1240,25 +1306,14 @@ public class Home extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
         jLabel11.setText("Assign Faculty List");
 
-        assignFacultyList_Table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][]{
-                        {null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null}
-                },
-                new String[]{
-                        "Select All", "#", "Faculty Name", "Course Name", "Subject Name", "Semester", "Total Class", "Action"
-                }
-        ) {
-            Class[] types = new Class[]{
-                    java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
-            };
+        assignFacultyList_Table = new JTable(assignmodel);
+        assignFacultyList_Table.setFont(new Font("Serif", Font.ITALIC, 16));
+        assignFacultyList_Table.setSelectionBackground(Color.green);
+        assignFacultyList_Table.getTableHeader().setBackground(Color.yellow);
+        assignFacultyList_Table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 16));
+        add(new JScrollPane(assignFacultyList_Table), BorderLayout.CENTER);
 
-            public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
-            }
-        });
+
         jScrollPane5.setViewportView(assignFacultyList_Table);
 
         subjectName_AssignFacultyList_Label.setText("Subject Name");
@@ -1285,6 +1340,9 @@ public class Home extends javax.swing.JFrame {
                 delete_AssignFacultyList_ButtonActionPerformed(evt);
             }
         });
+        edit_AssignFacultyList_Button.setBackground(new java.awt.Color(0, 0, 255));
+        edit_AssignFacultyList_Button.setForeground(new java.awt.Color(255, 255, 255));
+        edit_AssignFacultyList_Button.setText("EDIT");
 
         javax.swing.GroupLayout assign_Faculty_List_PanelLayout = new javax.swing.GroupLayout(assign_Faculty_List_Panel);
         assign_Faculty_List_Panel.setLayout(assign_Faculty_List_PanelLayout);
@@ -1315,7 +1373,9 @@ public class Home extends javax.swing.JFrame {
                                                 .addGap(182, 182, 182)
                                                 .addComponent(new_AssignFacultyList_Button)
                                                 .addGap(139, 139, 139)
-                                                .addComponent(delete_AssignFacultyList_Button)))
+                                                .addComponent(delete_AssignFacultyList_Button)
+                                                .addGap(142, 142, 142)
+                                                .addComponent(edit_AssignFacultyList_Button)))
                                 .addContainerGap(24, Short.MAX_VALUE))
         );
         assign_Faculty_List_PanelLayout.setVerticalGroup(
@@ -1336,7 +1396,8 @@ public class Home extends javax.swing.JFrame {
                                 .addGap(33, 33, 33)
                                 .addGroup(assign_Faculty_List_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(new_AssignFacultyList_Button)
-                                        .addComponent(delete_AssignFacultyList_Button))
+                                        .addComponent(delete_AssignFacultyList_Button)
+                                        .addComponent(edit_AssignFacultyList_Button))
                                 .addContainerGap(46, Short.MAX_VALUE))
         );
 
@@ -1608,41 +1669,40 @@ public class Home extends javax.swing.JFrame {
         subject_List_Panel.setVisible(false);
         add_Assign_Faculty_Panel.setVisible(false);
 
-        assign_Faculty_List_Panel.setVisible(false);   
+        assign_Faculty_List_Panel.setVisible(false);
 
 
         Connection con;
         java.sql.Statement st;
         try {
-                String username = "root";
-                String password = "B@shyal2015";
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                // create the connection object
-                con = DriverManager.getConnection(
-                        "jdbc:mysql://localhost:3306/attendancemanagementsystem", username, password);
+            String username = "root";
+            String password = "B@shyal2015";
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            // create the connection object
+            con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/attendancemanagementsystem", username, password);
 
-                        st = con.createStatement();
-                
+            st = con.createStatement();
 
-                ResultSet rs =  st.executeQuery("select coursename from course");
-        
 
-                while(rs.next()){
-                        String coursename = rs.getString("coursename");
-                        courseName_ComboBox.addItem(coursename);  
-                }
-       
-        
-                con.close();
-} catch (SQLException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-} catch (ClassNotFoundException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-}
+            ResultSet rs =  st.executeQuery("select coursename from course");
 
-}
+
+            while(rs.next()){
+                String coursename = rs.getString("coursename");
+                courseName_ComboBox.addItem(coursename);
+            }
+
+            con.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
 
 
     private void AddAssignFaculty_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1657,6 +1717,68 @@ public class Home extends javax.swing.JFrame {
         subject_List_Panel.setVisible(false);
         add_Assign_Faculty_Panel.setVisible(true);
         assign_Faculty_List_Panel.setVisible(false);
+
+        Connection con;
+        java.sql.Statement st;
+        try {
+            String username = "root";
+            String password = "B@shyal2015";
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            // create the connection object
+            con = DriverManager.getConnection(
+
+                    "jdbc:mysql://localhost:3306/attendancemanagementsystem", username, password);
+
+            st = con.createStatement();
+
+
+            ResultSet rs =  st.executeQuery("select facFname from faculty");
+
+
+            while(rs.next()){
+                String facFname = rs.getString("facFname");
+                facultyName_AddAssignFaculty_ComboBox.addItem(facFname);
+            }
+
+            con.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+        try {
+            String username = "root";
+            String password = "B@shyal2015";
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            // create the connection object
+            con = DriverManager.getConnection(
+
+                    "jdbc:mysql://localhost:3306/attendancemanagementsystem", username, password);
+
+            st = con.createStatement();
+
+
+            ResultSet rs =  st.executeQuery("select subjectname from subject");
+
+
+            while(rs.next()){
+                String subjectname = rs.getString("subjectname");
+                facsubjectName_AddAssignFaculty_ComboBox.addItem(subjectname);
+            }
+
+
+            con.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     private void home_MenuActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1751,58 +1873,35 @@ public class Home extends javax.swing.JFrame {
         Connection con;
         java.sql.Statement st;
         try {
-                String username = "root";
-                String password = "B@shyal2015";
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                // create the connection object
-                con = DriverManager.getConnection(
+            String username = "root";
+            String password = "B@shyal2015";
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            // create the connection object
+            con = DriverManager.getConnection(
 
-                        "jdbc:mysql://localhost:3306/attendancemanagementsystem", username, password);
+                    "jdbc:mysql://localhost:3306/attendancemanagementsystem", username, password);
 
-                        st = con.createStatement();
-
-
-                ResultSet rs =  st.executeQuery("select coursename from course");
+            st = con.createStatement();
 
 
-                while(rs.next()){
-                        String coursename = rs.getString("coursename");
-                        courseName_AddSubject_ComboBox.addItem(coursename);
-                }
+            ResultSet rs =  st.executeQuery("select coursename from course");
 
 
-                con.close();
-} catch (SQLException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-} catch (ClassNotFoundException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-}
-   }
-   //for assign faculty//
-// ResultSet rs = st.executeQuery("select facFname from Faculty");
-    // while(rs.next()){
-        //         String facFname = rs.getString("facFname");
-        //         facultyName_AddAssignFaculty_ComboBox.addItem(facFname);
-        // }
+            while(rs.next()){
+                String coursename = rs.getString("coursename");
+                courseName_AddSubject_ComboBox.addItem(coursename);
+            }
 
-        //"second method try"//
-//    private void Fillcombo(){
-//            try {   
-//         String sql = "select * from faculty";
-//          pst = conn.prepareStatement(sql);
-//            rs = pst.executeQuery();
-           
-//            while(rs.next()){
-//                    String name = rs.getString("coursename");
-//                    courseName_ComboBox.addItem(coursename);
-//            }
-                   
-//            } catch (Exception e) {
-//                    //TODO: handle exception
-//            }
 
+            con.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
 
     private void SubjectList_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {
@@ -1951,39 +2050,36 @@ public class Home extends javax.swing.JFrame {
         // TODO add your handling code here:
         String coursename = courseName_AddCourse_TextField.getText();
         String coursedesc = courseDescription_AddCourse_TextField.getText();
-        
+
 
         Course cou = new Course(null, coursename,coursedesc);
         CourseController cc = new CourseController();
         int insert = cc.registerCoursepreparedStatement(cou);
         if (insert > 0)
-        javax.swing.JOptionPane.showMessageDialog(null, "Successfully registered");
-    else
-        javax.swing.JOptionPane.showMessageDialog(null, "Failed to register");
+            javax.swing.JOptionPane.showMessageDialog(null, "Successfully registered");
+        else
+            javax.swing.JOptionPane.showMessageDialog(null, "Failed to register");
 
-//courseName_AddCourse_Label.setText("Name");
-
-//courseDescription_AddCourse_Label.setText("Description");
-}
+    }
 
 
 
     private void save_AddSubject_ButtonActionPerformed(java.awt.event.ActionEvent evt){
-        
+
         String subjectcode =  subjectCode_AddSubject_TextField.getText();
         String coursename = (String) courseName_AddSubject_ComboBox.getSelectedItem();
         String subjectname =  subjectName_AddSubject_TextField.getText();
         String semester = (String)semester_AddSubject_ComboBox.getSelectedItem();
         String desc = subjectDescription_AddSubject_TextField.getText();
 
-        
-        Subject sub = new Subject(subjectcode,subjectname,coursename,semester,desc);
-            SubjectController sc = new SubjectController();
-            int insert = sc.registerSubjectpreparedStatement(sub);
-            if (insert > 0)
-                javax.swing.JOptionPane.showMessageDialog(null, "Successfully registered");
-            else
-                javax.swing.JOptionPane.showMessageDialog(null, "Failed to register");
+
+        Subject sub = new Subject(subjectcode,subjectname,coursename,desc,semester);
+        SubjectController sc = new SubjectController();
+        int insert = sc.registerSubjectpreparedStatement(sub);
+        if (insert > 0)
+            javax.swing.JOptionPane.showMessageDialog(null, "Successfully registered");
+        else
+            javax.swing.JOptionPane.showMessageDialog(null, "Failed to register");
     }
 
     private void new_SubjectList_ButtonActionPerformed(java.awt.event.ActionEvent evt) {
@@ -2041,68 +2137,102 @@ public class Home extends javax.swing.JFrame {
         Facultycontroller controller = new Facultycontroller();
         List<Faculty> lstFaculty = controller.getAllFacultys();
 
-        String rows[][] = new String[lstFaculty.size()][8];
+        Object rows[][] = new Object[lstFaculty.size()][7];
         // Convert list to array
         for (int i = 0; i < lstFaculty.size(); i++) {
 
-            rows[i][0] = "a";
+            rows[i][0] = i+1;
             rows[i][1] = lstFaculty.get(i).getfacFname();
             rows[i][2] = lstFaculty.get(i).getfacLname();
             rows[i][3] = lstFaculty.get(i).getUsername();
             rows[i][4] = lstFaculty.get(i).getPhoneNo();
             rows[i][5] = lstFaculty.get(i).getDateOfBirth();
             rows[i][6] = lstFaculty.get(i).getGender();
-            rows[i][7] = "a";
-
 
         }
         facmodel = new DefaultTableModel(rows, faccolumns);
-
     }
 
     private void fillArrayCourse() {
         CourseController controller = new CourseController();
         List<Course> lstCourse = controller.getAllCourses();
 
-        String rows[][] = new String[lstCourse.size()][4];
+        Object rows[][] = new Object[lstCourse.size()][3];
         // Convert list to array
         for (int i = 0; i < lstCourse.size(); i++) {
 
-            rows[i][0] = "a";
+            rows[i][0] = i+1;
             rows[i][1] = lstCourse.get(i).getcoursename();
             rows[i][2] = lstCourse.get(i).getcoursedesc();
-            rows[i][3] = "a";
-
 
         }
         cormodel = new DefaultTableModel(rows, corcolumns);
-
     }
 
     private void fillArrayStudent() {
         StudentController controller = new StudentController();
         List<Student> lstStudent = controller.getAllStudents();
 
-        String rows[][] = new String[lstStudent.size()][11];
+        Object rows[][] = new Object[lstStudent.size()][10];
         // Convert list to array
         for (int i = 0; i < lstStudent.size(); i++) {
 
-            rows[i][0] = "a";
-            rows[i][1] = lstStudent.get(i).getstdFname();
-            rows[i][2] = lstStudent.get(i).getstdLname();
+            rows[i][0] = i+1;
+            rows[i][1] = lstStudent.get(i).getStdFname();
+            rows[i][2] = lstStudent.get(i).getStdLname();
             rows[i][3] = lstStudent.get(i).getStudentId();
-            rows[i][4] = lstStudent.get(i).getstdCourse();
-            rows[i][5] = lstStudent.get(i).getstdSemester();
-            rows[i][6] = lstStudent.get(i).getstdPhoneno();
-            rows[i][7] = lstStudent.get(i).getstdGender();
-            rows[i][8] = lstStudent.get(i).getstdPhoneno();
-            rows[i][9] = lstStudent.get(i).getstdPemail();
-            rows[i][10] = "a";
+            rows[i][4] = lstStudent.get(i).getStdCourse();
+            rows[i][5] = lstStudent.get(i).getStdSemester();
+            rows[i][6] = lstStudent.get(i).getStdPhnoneno();
+            rows[i][7] = lstStudent.get(i).getStdGender();
+            rows[i][8] = lstStudent.get(i).getStdPphoneno();
+            rows[i][9] = lstStudent.get(i).getStdPemail();
 
         }
         stdmodel = new DefaultTableModel(rows, stdcolumns);
 
     }
+
+    private void fillArraySubject() {
+        SubjectController controller = new SubjectController();
+        List<Subject> lstSubject = controller.getAllSubjects();
+
+        Object rows[][] = new Object[lstSubject.size()][6];
+        // Convert list to array
+        for (int i = 0; i < lstSubject.size(); i++) {
+
+            rows[i][0] = i+1;
+            rows[i][1] = lstSubject.get(i).getsubjectcode();
+            rows[i][2] = lstSubject.get(i).getsubjectname();
+            rows[i][3] = (String) lstSubject.get(i).getsemester();
+            rows[i][4] = (String) lstSubject.get(i).getcoursename();
+            rows[i][5] = lstSubject.get(i).getSubjectdesc();
+
+
+        }
+        submodel = new DefaultTableModel(rows, subcolumns);
+
+    }
+
+    private void fillArrayAssignFaculty() {
+        AssignFacultyController controller = new AssignFacultyController();
+        List<AssignFaculty> lstAssignFaculty = controller.getAllAssignFacultys();
+
+        Object rows[][] = new Object[lstAssignFaculty.size()][5];
+        // Convert list to array
+        for (int i = 0; i < lstAssignFaculty.size(); i++) {
+
+            rows[i][0] = i+1;
+            rows[i][1] = (String) lstAssignFaculty.get(i).getFacFname();
+            rows[i][2] = (String) lstAssignFaculty.get(i).getSubjectname();
+            rows[i][3] = lstAssignFaculty.get(i).getTotalclass();
+            rows[i][4] = "a";
+
+        }
+        assignmodel = new DefaultTableModel(rows, assigncolumns);
+
+    }
+
 
     // Variables declaration - do not modify
     private javax.swing.JMenuItem AddAssignFaculty_MenuItem;
@@ -2279,6 +2409,11 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JMenu subject_Menu;
     private javax.swing.JLabel totalClass_AddAssignFaculty_Label;
     private javax.swing.JTextField totalClass_AddAssignFaculty_TextField;
-    private JCheckBox facselectall;
+    private javax.swing.JButton edit_FacultyList_Button;
+    private javax.swing.JButton edit_StudentList_Button;
+    private javax.swing.JButton edit_CourseList_Button;
+    private javax.swing.JButton edit_SubjectList_Button;
+    private javax.swing.JButton edit_AssignFacultyList_Button;
+
     // End of variables declaration
 }

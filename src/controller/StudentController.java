@@ -20,15 +20,15 @@ public class StudentController {
             PreparedStatement st = db.con.prepareStatement(query);
 
             st.setString(1, student.getStudentId());
-            st.setString(2, student.getstdFname());
-            st.setString(3, student.getstdLname());
-            st.setString(4, student.getstdGender());
-            st.setString(5, student.getstdPhoneno());
-            st.setString(6, student.getstdCourse());
-            st.setString(7, student.getstdSemester());
-            st.setString(8, student.getstdPhoneno());
-            st.setString(9, student.getstdPemail());
-            st.setString(10, student.getstdPassword());
+            st.setString(2, student.getStdFname());
+            st.setString(3, student.getStdFname());
+            st.setString(4, student.getStdGender());
+            st.setString(5, student.getStdPhnoneno());
+            st.setString(6, student.getStdCourse());
+            st.setString(7, student.getStdSemester());
+            st.setString(8, student.getStdPphoneno());
+            st.setString(9, student.getStdPemail());
+            st.setString(10, student.getStdPassword());
 
 
 
@@ -47,15 +47,15 @@ public class StudentController {
 
         query="insert into students(StudentId, stdFname, stdLname, stdGender, stdPhoneno, stdCourse, stdSemester,stdPphoneno, stdPemail,stdPassword) values('"+
         student.getStudentId()+"','"+
-        student.getstdFname()+"','"+
-        student.getstdLname()+"','"+
-        student.getstdGender()+"','"+
-        student.getstdPhoneno()+"','"+
-        student.getstdCourse()+"','"+
-        student.getstdSemester()+"','"+
-        student.getstdPphoneno()+"','"+
-        student.getstdPemail()+"','"+
-        student.getstdPassword()+"');";
+        student.getStdFname()+"','"+
+        student.getStdLname()+"','"+
+        student.getStdGender()+"','"+
+        student.getStdPhnoneno()+"','"+
+        student.getStdCourse()+"','"+
+        student.getStdSemester()+"','"+
+        student.getStdPphoneno()+"','"+
+        student.getStdPemail()+"','"+
+        student.getStdPassword()+"');";
 
         return db.manipulate(query);
     }
@@ -73,14 +73,14 @@ public class StudentController {
                 Student student = new Student();
 
                 student.setStudentId(rs.getString("StudentId"));
-                student.setstdFname(rs.getString("stdFname"));
-                student.setstdLname(rs.getString("stdLname"));
-                student.setstdGender(rs.getString("stdGender"));
-                student.setstdPhoneno(rs.getString("stdPhoneno"));
-                student.setstdCourse(rs.getString("stdCourse"));
-                student.setstdSemester(rs.getString("stdSemester"));
-                student.setstdPphoneno(rs.getString("stdPphoneno"));
-                student.setstdPemail(rs.getString("stdPemail"));
+                student.setStdFname(rs.getString("stdFname"));
+                student.setStdLname(rs.getString("stdLname"));
+                student.setStdGender(rs.getString("stdGender"));
+                student.setStdPhnoneno(rs.getString("stdPhoneno"));
+                student.setStdCourse(rs.getString("stdCourse"));
+                student.setStdSemester(rs.getString("stdSemester"));
+                student.setStdPphoneno(rs.getString("stdPphoneno"));
+                student.setStdPemail(rs.getString("stdPemail"));
 
                 lstStudents.add(student);
             }

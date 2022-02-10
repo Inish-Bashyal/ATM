@@ -35,18 +35,19 @@ public class Faculty {
     public String getfacFname(){
         return facFname;
     }
-
     public void setfacFname(String facFname){
         this.facFname = facFname;
     }
+
 
     public String getfacLname(){
         return facLname;
     }
 
-    public void setfacLname(String facFname){
+    public void setfacLname(String facLname){
         this.facLname = facLname;
     }
+
     public String getGender() {
         return gender;
     }

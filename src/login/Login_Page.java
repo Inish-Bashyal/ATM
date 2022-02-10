@@ -6,6 +6,7 @@ package login;
 
 
 import controller.Facultycontroller;
+import dashboard.Home;
 import model.Faculty;
 import teacherDashboard.TeacherHome;
 
@@ -208,7 +209,10 @@ public class Login_Page extends javax.swing.JFrame {
 
                 Facultycontroller controller = new Facultycontroller();
                 Faculty faculty = controller.loginFaculty(usernameTextField.getText(),passPasswordField.getText());
-                if (faculty != null) {
+                if((usernameTextField.getText().equals("admin")) &&(passPasswordField.getText().equals("admin")) ){
+                    new Home().setVisible(true);
+                }
+                else if (faculty != null) {
                     new TeacherHome().setVisible(true);
                 }
                 else{

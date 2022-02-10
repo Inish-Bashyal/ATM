@@ -6,16 +6,31 @@ package teacherDashboard;
 import controller.StudentController;
 import model.Student;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+
 /**
  *
  * @author inishbashyal
  */
 public class TeacherHome extends javax.swing.JFrame {
+    Object[] stdcolumns = {" #", "First Name","Last Name", "ID", "Course", "Semester", "Phone No", "GENDER", "Parent's Phone", "Parent's Email"};
+    DefaultTableModel stdmodel,atdmodel;
+    Object[] attendancecolumns = {"#","Student Name","Present/Absent"};
 
     /**
      * Creates new form TeacherHome
      */
     public TeacherHome() {
+        fillArrayAttendance();
+        fillArrayStudent();
         initComponents();
         home_Panel.setVisible(true);
         add_Student_Panel.setVisible(false);
@@ -35,6 +50,8 @@ public class TeacherHome extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
 
+        edit_StudentList_Button = new javax.swing.JButton();
+        action = new javax.swing.JCheckBox();
         jMenu1 = new javax.swing.JMenu();
         layered_Panel = new javax.swing.JLayeredPane();
         home_Panel = new javax.swing.JPanel();
@@ -84,7 +101,7 @@ public class TeacherHome extends javax.swing.JFrame {
         add_Attendance_Panel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        SubjectName_ComboBox = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         date_AddAttendance_Calendar = new com.toedter.calendar.JDateChooser();
         submit_AddAttendance_Button = new javax.swing.JButton();
@@ -120,23 +137,22 @@ public class TeacherHome extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Home");
-
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/dashboard/background.jpeg"))); // NOI18N
         javax.swing.GroupLayout home_PanelLayout = new javax.swing.GroupLayout(home_Panel);
         home_Panel.setLayout(home_PanelLayout);
         home_PanelLayout.setHorizontalGroup(
                 home_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(home_PanelLayout.createSequentialGroup()
-                                .addGap(330, 330, 330)
-                                .addComponent(jLabel1)
-                                .addContainerGap(653, Short.MAX_VALUE))
+                                .addGap(91, 91, 91)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 815, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(102, Short.MAX_VALUE))
         );
         home_PanelLayout.setVerticalGroup(
                 home_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(home_PanelLayout.createSequentialGroup()
-                                .addGap(119, 119, 119)
-                                .addComponent(jLabel1)
-                                .addContainerGap(502, Short.MAX_VALUE))
+                                .addContainerGap()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 470, Short.MAX_VALUE)
+                                .addContainerGap())
         );
 
         jLabel4.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
@@ -144,7 +160,7 @@ public class TeacherHome extends javax.swing.JFrame {
 
         courseName_Label.setText("Course Name");
 
-        semester_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Semester 1", "Semester 2","Semester 3","Semester 4","Semester 5","Semester 6" }));
+        semester_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Semester 1", "Semester 2", "Semester 3", "Semester 4","Semester 5","Semester 6" }));
 
         semester_Label.setText("Semester");
 
@@ -332,36 +348,7 @@ public class TeacherHome extends javax.swing.JFrame {
         reset_StudentList_Button.setForeground(new java.awt.Color(255, 255, 255));
         reset_StudentList_Button.setText("RESET");
 
-        studentList_Table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
-                        {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null, null, null, null, null, null},
-                        {null, null, null, null, null, null, null, null, null, null, null, null, null}
-                },
-                new String [] {
-                        "Select All", "#", "Course Name", "Semester", "Roll No.", "Name", "Email", "Date Of Birth", "Gender", "Mobile", "Father Email Id", "Father Mobile", "Action"
-                }
-        ) {
-            Class[] types = new Class [] {
-                    java.lang.Object.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        jScrollPane2.setViewportView(studentList_Table);
 
         new_StudentList_Button.setBackground(new java.awt.Color(51, 153, 0));
         new_StudentList_Button.setForeground(new java.awt.Color(255, 255, 255));
@@ -375,6 +362,10 @@ public class TeacherHome extends javax.swing.JFrame {
         delete_StudentList_Button.setBackground(new java.awt.Color(255, 0, 0));
         delete_StudentList_Button.setForeground(new java.awt.Color(255, 255, 255));
         delete_StudentList_Button.setText("DELETE");
+
+        edit_StudentList_Button.setBackground(new java.awt.Color(0, 0, 255));
+        edit_StudentList_Button.setForeground(new java.awt.Color(255, 255, 255));
+        edit_StudentList_Button.setText("EDIT");
 
         javax.swing.GroupLayout student_List_PanelLayout = new javax.swing.GroupLayout(student_List_Panel);
         student_List_Panel.setLayout(student_List_PanelLayout);
@@ -405,11 +396,13 @@ public class TeacherHome extends javax.swing.JFrame {
                                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                         .addComponent(reset_StudentList_Button)))))
                                         .addGroup(student_List_PanelLayout.createSequentialGroup()
-                                                .addGap(224, 224, 224)
+                                                .addGap(136, 136, 136)
                                                 .addComponent(new_StudentList_Button)
-                                                .addGap(140, 140, 140)
-                                                .addComponent(delete_StudentList_Button)))
-                                .addContainerGap(33, Short.MAX_VALUE))
+                                                .addGap(125, 125, 125)
+                                                .addComponent(delete_StudentList_Button)
+                                                .addGap(120, 120, 120)
+                                                .addComponent(edit_StudentList_Button)))
+                                .addContainerGap(36, Short.MAX_VALUE))
         );
         student_List_PanelLayout.setVerticalGroup(
                 student_List_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -431,8 +424,9 @@ public class TeacherHome extends javax.swing.JFrame {
                                 .addGap(34, 34, 34)
                                 .addGroup(student_List_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(new_StudentList_Button)
-                                        .addComponent(delete_StudentList_Button))
-                                .addContainerGap(92, Short.MAX_VALUE))
+                                        .addComponent(delete_StudentList_Button)
+                                        .addComponent(edit_StudentList_Button))
+                                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         jLabel2.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
@@ -440,7 +434,7 @@ public class TeacherHome extends javax.swing.JFrame {
 
         jLabel3.setText("Subject Name : ");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        SubjectName_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { }));
 
         jLabel6.setText("Date : ");
 
@@ -460,25 +454,12 @@ public class TeacherHome extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         jLabel9.setText("Make Attendance");
 
-        Attendance_Table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
-                        {null, null, null},
-                        {null, null, null},
-                        {null, null, null},
-                        {null, null, null}
-                },
-                new String [] {
-                        "#", "Name", "Present"
-                }
-        ) {
-            Class[] types = new Class [] {
-                    java.lang.Integer.class, java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
+        Attendance_Table = new JTable(atdmodel);
+        Attendance_Table.setFont(new Font("Serif", Font.ITALIC, 16));
+        Attendance_Table.setSelectionBackground(Color.green);
+        Attendance_Table.getTableHeader().setBackground(Color.yellow);
+        Attendance_Table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 16));
+        add(new JScrollPane(Attendance_Table), BorderLayout.CENTER);
         jScrollPane3.setViewportView(Attendance_Table);
 
         save_AttendancePanel_Button.setBackground(new java.awt.Color(0, 0, 255));
@@ -553,7 +534,7 @@ public class TeacherHome extends javax.swing.JFrame {
                                                 .addContainerGap())
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, add_Attendance_PanelLayout.createSequentialGroup()
                                                 .addGroup(add_Attendance_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(SubjectName_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(jLabel3))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 108, Short.MAX_VALUE)
                                                 .addGroup(add_Attendance_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -586,7 +567,7 @@ public class TeacherHome extends javax.swing.JFrame {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addGroup(add_Attendance_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                         .addComponent(date_AddAttendance_Calendar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(jComboBox1, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))))
+                                                        .addComponent(SubjectName_ComboBox, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))))
                                 .addComponent(layeredPanel_AddAttendance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
         );
@@ -773,6 +754,13 @@ public class TeacherHome extends javax.swing.JFrame {
                 studentList_MenuItemActionPerformed(evt);
             }
         });
+        studentList_Table = new JTable(stdmodel);
+        studentList_Table.setFont(new Font("Serif", Font.ITALIC, 16));
+        studentList_Table.setSelectionBackground(Color.green);
+        studentList_Table.getTableHeader().setBackground(Color.yellow);
+        studentList_Table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 16));
+        add(new JScrollPane(studentList_Table), BorderLayout.CENTER);
+        jScrollPane2.setViewportView(studentList_Table);
         student_menu.add(studentList_MenuItem);
 
         jMenuBar1.add(student_menu);
@@ -794,6 +782,8 @@ public class TeacherHome extends javax.swing.JFrame {
             }
         });
         attendance_Menu.add(attendanceList_MenuItem);
+
+
 
         jMenuBar1.add(attendance_Menu);
 
@@ -819,11 +809,42 @@ public class TeacherHome extends javax.swing.JFrame {
 
     private void addStudent_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+        // TODO add your handling code here:
         home_Panel.setVisible(false);
         add_Student_Panel.setVisible(true);
         student_List_Panel.setVisible(false);
         add_Attendance_Panel.setVisible(false);
         attendance_List_Panel.setVisible(false);
+        Connection con;
+        java.sql.Statement st;
+        try {
+            String username = "root";
+            String password = "B@shyal2015";
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            // create the connection object
+            con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/attendancemanagementsystem", username, password);
+
+            st = con.createStatement();
+
+
+            ResultSet rs =  st.executeQuery("select coursename from course");
+
+
+            while(rs.next()){
+                String coursename = rs.getString("coursename");
+                courseName_ComboBox.addItem(coursename);
+            }
+
+
+            con.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
 
     }
@@ -836,6 +857,38 @@ public class TeacherHome extends javax.swing.JFrame {
         add_Attendance_Panel.setVisible(true);
         attendance_List_Panel.setVisible(false);
         AttendancePanel.setVisible(false);
+        Connection con;
+        java.sql.Statement st;
+        try {
+            String username = "root";
+            String password = "B@shyal2015";
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            // create the connection object
+            con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/attendancemanagementsystem", username, password);
+
+            st = con.createStatement();
+
+
+            ResultSet rs =  st.executeQuery("select subjectname from subject");
+
+
+            while(rs.next()){
+                String coursename = rs.getString("subjectname");
+                SubjectName_ComboBox.addItem(coursename);
+            }
+
+
+            con.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
     }
 
     private void student_email_TextFieldActionPerformed(java.awt.event.ActionEvent evt) {
@@ -871,7 +924,10 @@ public class TeacherHome extends javax.swing.JFrame {
         student_List_Panel.setVisible(false);
         add_Attendance_Panel.setVisible(false);
         attendance_List_Panel.setVisible(true);
+
     }
+
+
 
     private void save_AddStudent_ButtonActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
@@ -953,9 +1009,52 @@ public class TeacherHome extends javax.swing.JFrame {
         });
     }
 
+    private void fillArrayStudent() {
+        StudentController controller = new StudentController();
+        List<Student> lstStudent = controller.getAllStudents();
+
+        Object rows[][] = new Object[lstStudent.size()][10];
+        // Convert list to array
+        for (int i = 0; i < lstStudent.size(); i++) {
+
+            rows[i][0] = i+1;
+            rows[i][1] = lstStudent.get(i).getStdFname();
+            rows[i][2] = lstStudent.get(i).getStdLname();
+            rows[i][3] = lstStudent.get(i).getStudentId();
+            rows[i][4] = lstStudent.get(i).getStdCourse();
+            rows[i][5] = lstStudent.get(i).getStdSemester();
+            rows[i][6] = lstStudent.get(i).getStdPhnoneno();
+            rows[i][7] = lstStudent.get(i).getStdGender();
+            rows[i][8] = lstStudent.get(i).getStdPphoneno();
+            rows[i][9] = lstStudent.get(i).getStdPemail();
+
+
+        }
+        stdmodel = new DefaultTableModel(rows, stdcolumns);
+    }
+
+    private void fillArrayAttendance() {
+        StudentController controller = new StudentController();
+        List<Student> lstStudent1 = controller.getAllStudents();
+
+        Object data[][] = new Object[lstStudent1.size()][3];
+        // Convert list to array
+        for (int i = 0; i < lstStudent1.size(); i++) {
+
+            data[i][0] = i+1;
+            data[i][1] = lstStudent1.get(i).getStdFname();
+            data[i][2] = "a";
+
+
+        }
+        atdmodel = new DefaultTableModel(data, attendancecolumns);
+    }
+
     // Variables declaration - do not modify
+    private javax.swing.JCheckBox action;
     private javax.swing.JPanel AttendancePanel;
     private javax.swing.JTable Attendance_Table;
+    private javax.swing.JComboBox<String> SubjectName_ComboBox;
     private javax.swing.JMenuItem addAttendance_MenuItem;
     private javax.swing.JMenuItem addStudent_MenuItem;
     private javax.swing.JPanel add_Attendance_Panel;
@@ -976,7 +1075,6 @@ public class TeacherHome extends javax.swing.JFrame {
     private javax.swing.JMenu home_Menu;
     private javax.swing.JMenuItem home_MenuItem;
     private javax.swing.JPanel home_Panel;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
@@ -1034,5 +1132,6 @@ public class TeacherHome extends javax.swing.JFrame {
     private javax.swing.JLabel subjectName_AttendanceList_Label;
     private javax.swing.JTextField subjectName_AttendanceList_TextField;
     private javax.swing.JButton submit_AddAttendance_Button;
+    private javax.swing.JButton edit_StudentList_Button;
     // End of variables declaration
 }

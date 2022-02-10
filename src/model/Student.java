@@ -36,82 +36,60 @@ public class Student {
         return StudentId;
     }
     public void setStudentId(String StudentId){
-        this.StudentId = StudentId;
+        this.StudentId=StudentId;
     }
-
-    public String getstdFname(){
+    public String getStdFname(){
         return stdFname;
     }
-    public void setstdFname(String stdFname){
-        this.stdFname = this.stdFname;
+    public void setStdFname(String stdFname){
+        this.stdFname=stdFname;
     }
-
-    public String getstdLname(){
+    public String getStdLname(){
         return stdLname;
     }
-    public void setstdLname(String stdLname){
-        this.stdLname = this.stdLname;
+    public void setStdLname(String stdLname){
+        this.stdLname=stdLname;
     }
-
-    public String getstdGender(){
+    public String getStdGender(){
         return stdGender;
     }
-    public void setstdGender(String stdGender){
-        this.stdGender = this.stdGender;
+    public void setStdGender(String stdGender){
+        this.stdGender=stdGender;
     }
-
-    public String getstdPassword(){
-        return stdPassword;
-    }
-    public void setstdPassword(){
-        this.stdPassword = stdPassword;
-    }
-
-    public String getstdPhoneno(){
+    public String getStdPhnoneno(){
         return stdPhnoneno;
     }
-    public void setstdPhoneno(String stdPhoneno){
-        this.stdPhnoneno = stdPhnoneno;
+    public void setStdPhnoneno(String stdPhnoneno){
+        this.stdPhnoneno=stdPhnoneno;
     }
-
-    public String getstdCourse(){
+    public String getStdCourse(){
         return stdCourse;
     }
-    public void setstdCourse(String stdCourse){
-        this.stdCourse = this.stdCourse;
+    public void setStdCourse(String stdCourse){
+        this.stdCourse=stdCourse;
     }
-
-    public String getstdSemester(){
+    public String getStdSemester(){
         return stdSemester;
     }
-    public void setstdSemester(String stdSemester){
-        this.stdSemester = this.stdSemester;
+    public void setStdSemester(String stdSemester){
+        this.stdSemester=stdSemester;
     }
-
-    public String getstdPphoneno(){
+    public String getStdPphoneno(){
         return stdPphoneno;
     }
-    public void setstdPphoneno(String stdPphoneno){
-        this.stdPphoneno = this.stdPphoneno;
+    public void setStdPphoneno(String stdPphnoneno){
+        this.stdPphoneno=stdPphnoneno;
     }
-
-    public String getstdPemail(){
+    public String getStdPemail(){
         return stdPemail;
     }
-    public void setstdPemail(String stdPemail){
-        this.stdPemail = this.stdPemail;
+    public void setStdPemail(String stdPemail){
+        this.stdPemail=stdPemail;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public String getStdPassword(){
+        return stdPassword;
+    }
+    public void setStdPassword(String stdPassword){
+        this.stdPassword=stdPassword;
+    }
 }

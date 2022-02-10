@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import databaseConnection.databaseconnection;
 
 public class Facultycontroller {
     databaseconnection db = new databaseconnection();
@@ -70,8 +69,8 @@ public class Facultycontroller {
             while (rs.next()) {
                 faculty = new Faculty();
                 faculty.setLoginId(rs.getInt("LoginId"));
-                faculty.setfacFname(rs.getString("factFname"));
-                faculty.setfacLname(rs.getString("factLname"));
+                faculty.setfacFname(rs.getString("facFname"));
+                faculty.setfacLname(rs.getString("facLname"));
                 faculty.setGender(rs.getString("gender"));
                 faculty.setDateOfBirth(rs.getString("dateOfBirth"));
                 faculty.setUsername(rs.getString("username"));
@@ -102,6 +101,7 @@ public class Facultycontroller {
                 faculty.setPhoneNo(rs.getString("phoneNo"));
                 faculty.setDateOfBirth(rs.getString("dateOfBirth"));
                 faculty.setUsername(rs.getString("username"));
+
 
                 lstFacultys.add(faculty);
             }
