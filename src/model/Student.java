@@ -1,5 +1,7 @@
 package model;
 
+import javax.swing.*;
+
 public class Student {
     private String StudentId;
     private String stdFname;
@@ -11,7 +13,8 @@ public class Student {
     private String stdSemester;
     private String stdPphoneno;
     private String stdPemail;
-    
+
+
  
     public Student(){
 
@@ -30,7 +33,11 @@ public class Student {
         this.stdSemester = stdSemester;
         this.stdPphoneno = stdPphoneno;
         this.stdPemail = stdPemail;
+
     }
+
+
+
 
     public String getStudentId(){
         return StudentId;

@@ -14,6 +14,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -37,6 +38,8 @@ public class TeacherHome extends javax.swing.JFrame {
         student_List_Panel.setVisible(false);
         add_Attendance_Panel.setVisible(false);
         attendance_List_Panel.setVisible(false);
+
+
 
 
     }
@@ -132,6 +135,8 @@ public class TeacherHome extends javax.swing.JFrame {
         attendance_Menu = new javax.swing.JMenu();
         addAttendance_MenuItem = new javax.swing.JMenuItem();
         attendanceList_MenuItem = new javax.swing.JMenuItem();
+
+
 
         jMenu1.setText("jMenu1");
 
@@ -344,6 +349,12 @@ public class TeacherHome extends javax.swing.JFrame {
         search_StudentList_Button.setForeground(new java.awt.Color(255, 255, 255));
         search_StudentList_Button.setText("SEARCH");
 
+        search_StudentList_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+
+            }
+        });
+
         reset_StudentList_Button.setBackground(new java.awt.Color(0, 0, 255));
         reset_StudentList_Button.setForeground(new java.awt.Color(255, 255, 255));
         reset_StudentList_Button.setText("RESET");
@@ -454,7 +465,26 @@ public class TeacherHome extends javax.swing.JFrame {
         jLabel9.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
         jLabel9.setText("Make Attendance");
 
-        Attendance_Table = new JTable(atdmodel);
+        Attendance_Table = new JTable(atdmodel){
+
+            private static final long serialVersionUID = 1L;
+
+            /*@Override
+            public Class getColumnClass(int column) {
+            return getValueAt(0, column).getClass();
+            }*/
+            @Override
+            public Class getColumnClass(int column) {
+                switch (column) {
+                    case 0:
+                        return String.class;
+                    case 1:
+                        return String.class;
+                    default:
+                        return Boolean.class;
+                }
+            }
+        };
         Attendance_Table.setFont(new Font("Serif", Font.ITALIC, 16));
         Attendance_Table.setSelectionBackground(Color.green);
         Attendance_Table.getTableHeader().setBackground(Color.yellow);
@@ -1033,21 +1063,26 @@ public class TeacherHome extends javax.swing.JFrame {
         stdmodel = new DefaultTableModel(rows, stdcolumns);
     }
 
+
+
     private void fillArrayAttendance() {
+
         StudentController controller = new StudentController();
         List<Student> lstStudent1 = controller.getAllStudents();
-
+//        Random rnd = new Random();
         Object data[][] = new Object[lstStudent1.size()][3];
-        // Convert list to array
+
+
         for (int i = 0; i < lstStudent1.size(); i++) {
 
             data[i][0] = i+1;
-            data[i][1] = lstStudent1.get(i).getStdFname();
-            data[i][2] = "a";
-
+            data[i][1] = lstStudent1.get(i).getStdFname()+" "+lstStudent1.get(i).getStdLname();
+            data[i][2] =false;
 
         }
         atdmodel = new DefaultTableModel(data, attendancecolumns);
+//        return atdmodel;
+
     }
 
     // Variables declaration - do not modify
@@ -1133,5 +1168,8 @@ public class TeacherHome extends javax.swing.JFrame {
     private javax.swing.JTextField subjectName_AttendanceList_TextField;
     private javax.swing.JButton submit_AddAttendance_Button;
     private javax.swing.JButton edit_StudentList_Button;
+
     // End of variables declaration
+
+
 }

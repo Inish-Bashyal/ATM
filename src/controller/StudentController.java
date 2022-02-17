@@ -2,15 +2,18 @@ package controller;
 import databaseConnection.databaseconnection;
 
 import model.Student;
+import teacherDashboard.TeacherHome;
 
+import javax.swing.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentController {
+public class StudentController{
     databaseconnection db = new databaseconnection();
+
 
     public int registerStudentpreparedStatement(Student student) {
         try {
@@ -81,6 +84,7 @@ public class StudentController {
                 student.setStdSemester(rs.getString("stdSemester"));
                 student.setStdPphoneno(rs.getString("stdPphoneno"));
                 student.setStdPemail(rs.getString("stdPemail"));
+
 
                 lstStudents.add(student);
             }

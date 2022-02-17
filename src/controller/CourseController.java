@@ -27,17 +27,13 @@ public class CourseController {
         }
     }
 
-
-
     public int addCourse (Course course)
     {
         String query;
-
         query="insert into course(coursename,coursedesc) values('"+
         // course.getidcourse()+"','"+
         course.getcoursename()+"','"+
         course.getcoursedesc()+"');";
-
        return db.manipulate(query);
     }
     public List<Course> getAllCourses() {
@@ -45,26 +41,19 @@ public class CourseController {
         query = "select * from course";
         db = new databaseconnection();
         ResultSet rs = db.retrieve(query);
-
         List<Course> lstCourses = new ArrayList<Course>();
-
         try {
             while (rs.next()) {
                 Course course = new Course();
-
                 course.setidcourse(rs.getInt("idcourse"));
                 course.setcoursename(rs.getString("coursename"));
                 course.setcoursedesc(rs.getString("coursedesc"));
-
-
                 lstCourses.add(course);
             }
         } catch (Exception ex) {
             System.out.println("Error" + ex);
         }
-
         return lstCourses;
     }
-
 
 }

@@ -4,6 +4,7 @@
  */
 package dashboard;
 
+import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -1248,6 +1249,23 @@ public class Home extends javax.swing.JFrame {
         save_AddAssignFaculty_Button.setBackground(new java.awt.Color(0, 0, 255));
         save_AddAssignFaculty_Button.setForeground(new java.awt.Color(255, 255, 255));
         save_AddAssignFaculty_Button.setText("SAVE");
+
+        save_AddAssignFaculty_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                String facnmae = (String) facultyName_AddAssignFaculty_ComboBox.getSelectedItem();
+                String subjectname =(String) facsubjectName_AddAssignFaculty_ComboBox.getSelectedItem();
+                String totalclass= totalClass_AddAssignFaculty_TextField.getText();
+
+
+                AssignFaculty cou = new AssignFaculty( facnmae,subjectname,totalclass);
+                AssignFacultyController cc = new AssignFacultyController();
+                int insert = cc.registerFacultypreparedStatement(cou);
+                if (insert > 0)
+                    JOptionPane.showMessageDialog(null, "Successfully registered");
+                else
+                    JOptionPane.showMessageDialog(null, "Failed to register");
+            }
+        });
 
         reset_AddAssignFaculty_Button.setBackground(new java.awt.Color(0, 0, 255));
         reset_AddAssignFaculty_Button.setForeground(new java.awt.Color(255, 255, 255));

@@ -71,5 +71,4 @@ public class AssignFacultyController {
         return lstAssignFacultys;
     }
 
-
 }
