@@ -40,12 +40,7 @@ CREATE TABLE `attendancemanagementsystem`.`course` (
   `semester` VARCHAR(15) NOT NULL,
   PRIMARY KEY (`subjectcode`));
   
-  CREATE TABLE `attendancemanagementsystem`.`assignfaculty` (
-  `assigncode` INT NOT NULL AUTO_INCREMENT,
-  `facFname` VARCHAR(100) NOT NULL,
-   `subjectname` VARCHAR(100),
-  `totalclass` INT NOT NULL,
-  PRIMARY KEY (`assigncode`));
+
 
   CREATE TABLE `attendancemanagementsystem`.`assignfaculty` (
   `assigncode` INT NOT NULL AUTO_INCREMENT,
@@ -53,6 +48,15 @@ CREATE TABLE `attendancemanagementsystem`.`course` (
    `subjectname` VARCHAR(100),
   `totalclass` INT NOT NULL,
   PRIMARY KEY (`assigncode`));
+
+    CREATE TABLE `attendancemanagementsystem`.`attendance` (
+  `attendanceId` INT NOT NULL AUTO_INCREMENT,
+  `stdname` VARCHAR(100) NOT NULL,
+   `stdId` VARCHAR(20) NOT NULL,
+   `subjectname` VARCHAR(100),
+   `attendancedate` VARCHAR(100),
+  `status` VARCHAR(100),
+  PRIMARY KEY (`attendanceId`));
 
 
 select * from course;
@@ -60,3 +64,5 @@ select * from faculty;
 select * from students;
 select * from subject;
 select * from assignfaculty;
+select * from attendance;
+

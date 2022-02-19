@@ -3,7 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package teacherDashboard;
+import controller.AttendanceController;
 import controller.StudentController;
+import model.Attendance;
 import model.Student;
 
 import javax.swing.*;
@@ -13,8 +15,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 
 /**
@@ -23,13 +25,16 @@ import java.util.Random;
  */
 public class TeacherHome extends javax.swing.JFrame {
     Object[] stdcolumns = {" #", "First Name","Last Name", "ID", "Course", "Semester", "Phone No", "GENDER", "Parent's Phone", "Parent's Email"};
-    DefaultTableModel stdmodel,atdmodel;
-    Object[] attendancecolumns = {"#","Student Name","Present/Absent"};
+    DefaultTableModel stdmodel,atdmodel,stdattendance;
+    Object[] attendancecolumns = {"#","Student Name","Student ID","Present/Absent"};
+    Object[] attendancelistcolumns = {"#","Student Name","Student ID","Subject Name","Date","Status"};
+
 
     /**
      * Creates new form TeacherHome
      */
     public TeacherHome() {
+        fillArrayAttendanceList();
         fillArrayAttendance();
         fillArrayStudent();
         initComponents();
@@ -480,13 +485,15 @@ public class TeacherHome extends javax.swing.JFrame {
                         return String.class;
                     case 1:
                         return String.class;
+                    case 2:
+                        return  String.class;
                     default:
                         return Boolean.class;
                 }
             }
         };
         Attendance_Table.setFont(new Font("Serif", Font.ITALIC, 16));
-        Attendance_Table.setSelectionBackground(Color.green);
+//        Attendance_Table.setSelectionBackground(Color.green);
         Attendance_Table.getTableHeader().setBackground(Color.yellow);
         Attendance_Table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 16));
         add(new JScrollPane(Attendance_Table), BorderLayout.CENTER);
@@ -495,6 +502,42 @@ public class TeacherHome extends javax.swing.JFrame {
         save_AttendancePanel_Button.setBackground(new java.awt.Color(0, 0, 255));
         save_AttendancePanel_Button.setForeground(new java.awt.Color(255, 255, 255));
         save_AttendancePanel_Button.setText("SAVE");
+        save_AttendancePanel_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                String subjectname = (String)SubjectName_ComboBox.getSelectedItem();
+                String attendancedate = date_AddAttendance_Calendar.getDate().toString();
+                int insert = 0;
+                String attstatus;
+                for (int i=0;i<atdmodel.getRowCount();i++){
+                    String stdname = atdmodel.getValueAt(i,1).toString();
+                    String stdId =atdmodel.getValueAt(i,2).toString();
+                    Object status = atdmodel.getValueAt(i,3);
+
+                    if(status.equals(true)){
+                        attstatus="Present";
+                    }
+                    else
+                        attstatus="Absent";
+
+
+                    Attendance attendance = new Attendance(stdname,stdId,subjectname,attendancedate,attstatus);
+                    AttendanceController ac = new AttendanceController();
+
+                     insert = ac.registerAttendancepreparedStatement(attendance);
+
+                }
+                if (insert > 0)
+                    javax.swing.JOptionPane.showMessageDialog(null, "Successfully registered");
+                else
+                    javax.swing.JOptionPane.showMessageDialog(null, "Failed to register");
+
+
+
+
+
+            }
+        });
+
 
         reset_AttendancePanel_Button.setBackground(new java.awt.Color(255, 0, 0));
         reset_AttendancePanel_Button.setForeground(new java.awt.Color(255, 255, 255));
@@ -605,42 +648,12 @@ public class TeacherHome extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Lucida Grande", 1, 24)); // NOI18N
         jLabel7.setText("Attendance List");
 
-        attendance_List_Table.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null}
-                },
-                new String [] {
-                        "#", "Subject Name", "Student Name", "Semester", "Status"
-                }
-        ) {
-            Class[] types = new Class [] {
-                    java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
+        attendance_List_Table = new JTable(stdattendance);
+        attendance_List_Table.setFont(new Font("Serif", Font.ITALIC, 16));
+        attendance_List_Table.setSelectionBackground(Color.green);
+        attendance_List_Table.getTableHeader().setBackground(Color.yellow);
+        attendance_List_Table.getTableHeader().setFont(new Font("Serif", Font.BOLD, 16));
+        add(new JScrollPane(attendance_List_Table), BorderLayout.CENTER);
         jScrollPane1.setViewportView(attendance_List_Table);
 
         subjectName_AttendanceList_Label.setText("Subject Name");
@@ -845,11 +858,12 @@ public class TeacherHome extends javax.swing.JFrame {
         student_List_Panel.setVisible(false);
         add_Attendance_Panel.setVisible(false);
         attendance_List_Panel.setVisible(false);
+
         Connection con;
         java.sql.Statement st;
         try {
             String username = "root";
-            String password = "B@shyal2015";
+            String password = "root";
             Class.forName("com.mysql.cj.jdbc.Driver");
             // create the connection object
             con = DriverManager.getConnection(
@@ -866,7 +880,6 @@ public class TeacherHome extends javax.swing.JFrame {
                 courseName_ComboBox.addItem(coursename);
             }
 
-
             con.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -875,7 +888,6 @@ public class TeacherHome extends javax.swing.JFrame {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
 
     }
 
@@ -891,7 +903,7 @@ public class TeacherHome extends javax.swing.JFrame {
         java.sql.Statement st;
         try {
             String username = "root";
-            String password = "B@shyal2015";
+            String password = "root";
             Class.forName("com.mysql.cj.jdbc.Driver");
             // create the connection object
             con = DriverManager.getConnection(
@@ -1064,25 +1076,45 @@ public class TeacherHome extends javax.swing.JFrame {
     }
 
 
-
-    private void fillArrayAttendance() {
+    private Object fillArrayAttendance() {
 
         StudentController controller = new StudentController();
         List<Student> lstStudent1 = controller.getAllStudents();
 //        Random rnd = new Random();
-        Object data[][] = new Object[lstStudent1.size()][3];
+        Object data[][] = new Object[lstStudent1.size()][4];
 
 
         for (int i = 0; i < lstStudent1.size(); i++) {
 
             data[i][0] = i+1;
             data[i][1] = lstStudent1.get(i).getStdFname()+" "+lstStudent1.get(i).getStdLname();
-            data[i][2] =false;
+            data[i][2]=lstStudent1.get(i).getStudentId();
+            data[i][3] =false;
 
         }
         atdmodel = new DefaultTableModel(data, attendancecolumns);
-//        return atdmodel;
+        return data;
 
+    }
+
+    private void fillArrayAttendanceList() {
+        AttendanceController controller = new AttendanceController();
+        List<Attendance> lstAttendance = controller.getAllAttendance();
+        
+
+        Object rows[][] = new Object[lstAttendance.size()][6];
+        // Convert list to array
+        for (int i = 0; i < lstAttendance.size(); i++) {
+
+            rows[i][0] = i+1;
+            rows[i][1] = lstAttendance.get(i).getStdname();
+            rows[i][2] = lstAttendance.get(i).getStdId();
+            rows[i][3] = lstAttendance.get(i).getSubjectname();
+            rows[i][4] = lstAttendance.get(i).getAttendancedate();
+            rows[i][5] = lstAttendance.get(i).getStatus();
+
+        }
+        stdattendance = new DefaultTableModel(rows, attendancelistcolumns);
     }
 
     // Variables declaration - do not modify

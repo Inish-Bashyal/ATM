@@ -794,7 +794,7 @@ public class Home extends javax.swing.JFrame {
                 java.sql.Statement st;
                 try {
                     String username = "root";
-                    String password = "B@shyal2015";
+                    String password = "root";
                     Class.forName("com.mysql.cj.jdbc.Driver");
                     // create the connection object
                     con = DriverManager.getConnection(
@@ -1694,7 +1694,7 @@ public class Home extends javax.swing.JFrame {
         java.sql.Statement st;
         try {
             String username = "root";
-            String password = "B@shyal2015";
+            String password = "root";
             Class.forName("com.mysql.cj.jdbc.Driver");
             // create the connection object
             con = DriverManager.getConnection(
@@ -1740,7 +1740,7 @@ public class Home extends javax.swing.JFrame {
         java.sql.Statement st;
         try {
             String username = "root";
-            String password = "B@shyal2015";
+            String password = "root";
             Class.forName("com.mysql.cj.jdbc.Driver");
             // create the connection object
             con = DriverManager.getConnection(
@@ -1770,7 +1770,7 @@ public class Home extends javax.swing.JFrame {
 
         try {
             String username = "root";
-            String password = "B@shyal2015";
+            String password = "root";
             Class.forName("com.mysql.cj.jdbc.Driver");
             // create the connection object
             con = DriverManager.getConnection(
@@ -1892,7 +1892,7 @@ public class Home extends javax.swing.JFrame {
         java.sql.Statement st;
         try {
             String username = "root";
-            String password = "B@shyal2015";
+            String password = "root";
             Class.forName("com.mysql.cj.jdbc.Driver");
             // create the connection object
             con = DriverManager.getConnection(
